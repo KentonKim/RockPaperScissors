@@ -84,19 +84,25 @@ function exitMenu(e) {
             emptyBox.classList.add("hidden")
             menuBox.style.flex = "3"
             playButton()
-            menuState = 0
+            menuState = 2 // attack menu
         }
         else if (menuTR.classList.contains(select)) {
-            
+            menuBox.classList.add("hidden")
+            playButton()
+            menuState = 0 // dialogue
         }
         else if (menuBL.classList.contains(select)) {
-            
+            menuBox.classList.add("hidden")
+            playButton()
+            menuState = 0
         }
         else if (menuBR.classList.contains(select)) {
-            
+            menuBox.classList.add("hidden")
+            playButton()
+            menuState = 0
         }
     }
-    else if (menuState == 0 && e.key == "o") {
+    else if (menuState == 2 && e.key == "o") {
         ppBox.classList.add('hidden')
         emptyBox.classList.remove("hidden")
         menuBox.style.flex = "4"

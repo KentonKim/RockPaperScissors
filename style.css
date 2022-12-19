@@ -50,10 +50,11 @@ html, body {
     border-radius: 20px;
     color: #f2ecdc;
     flex: 1;
-    padding: 30px;
+    padding-left: 30px;
+    padding-top: 15px;
 
     text-shadow: 2px 2px 4px #1f1b36;
-    font-size: 56px;
+    font-size: 48px;
 }
 
 /* Menu */
