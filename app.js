@@ -1,65 +1,70 @@
 const menuOptions = document.querySelectorAll('.menu-option')
 const audioButton = document.querySelector('#audio-button')
+const ppBox = document.querySelector("#pp-main")
+const menuBox = document.querySelector("#menu-main")
+const emptyBox = document.querySelector(".empty")
 const textBox   = document.querySelector('.chat-inner')
+let menuState = 1
 
-const menuFight = menuOptions[0]
-const menuBag   = menuOptions[2]
-const menuPk    = menuOptions[1]
-const menuRun   = menuOptions[3]
+const menuTL = menuOptions[0]
+const menuTR   = menuOptions[2]
+const menuBL    = menuOptions[1]
+const menuBR   = menuOptions[3]
 const select    = 'select'
 
 // Dialogue
 
 document.addEventListener('keyup',moveMenu)
-menuFight.classList.add(select)
+document.addEventListener('keyup',exitMenu)
+menuTL.classList.add(select)
 
 function moveMenu(e) {
     switch(e.key) {
         case 'w' : // up 
-            if (menuPk.classList.contains(select)) {
-                menuFight.classList.add(select)
-                menuPk.classList.remove(select)
+            if (menuBL.classList.contains(select)) {
+                menuTL.classList.add(select)
+                menuBL.classList.remove(select)
                 playButton()
             }
-            if (menuRun.classList.contains(select)) {
-                menuBag.classList.add(select)
-                menuRun.classList.remove(select)
+            if (menuBR.classList.contains(select)) {
+                menuTR.classList.add(select)
+                menuBR.classList.remove(select)
                 playButton()
             }
             break
         case 'a' : // left
-            if (menuBag.classList.contains(select)) {
-                menuFight.classList.add(select)
-                menuBag.classList.remove(select)
+            if (menuTR.classList.contains(select)) {
+                menuTL.classList.add(select)
+                menuTR.classList.remove(select)
                 playButton()
             }
-            if (menuRun.classList.contains(select)) {
-                menuPk.classList.add(select)
-                menuRun.classList.remove(select)
+            if (menuBR.classList.contains(select)) {
+                menuBL.classList.add(select)
+                menuBR.classList.remove(select)
                 playButton()
             }
             break
         case 's' : // down
-            if (menuFight.classList.contains(select)) {
-                menuPk.classList.add(select)
-                menuFight.classList.remove(select)
+            if (menuTL.classList.contains(select)) {
+                menuBL.classList.add(select)
+                menuTL.classList.remove(select)
                 playButton()
             }
-            if (menuBag.classList.contains(select)) {
-                menuRun.classList.add(select)
-                menuBag.classList.remove(select)
+            if (menuTR.classList.contains(select)) {
+                menuBR.classList.add(select)
+                menuTR.classList.remove(select)
                 playButton()
             }
             break
         case 'd' : // right
-            if (menuFight.classList.contains(select)) {
-                menuBag.classList.add(select)
-                menuFight.classList.remove(select)
+            if (menuTL.classList.contains(select)) {
+                menuTR.classList.add(select)
+                menuTL.classList.remove(select)
                 playButton()
             }
-            if (menuPk.classList.contains(select)) {
-                menuRun.classList.add(select)
-                menuPk.classList.remove(select)
+            if (menuBL.classList.contains(select)) {
+                menuBR.classList.add(select)
+                menuBL.classList.remove(select)
                 playButton()
             }
             break
@@ -70,4 +75,33 @@ function playButton() {
     audioButton.pause();
     audioButton.currentTime = 0;
     audioButton.play()
+}
+
+function exitMenu(e) {
+    if (menuState == 1 && e.key == "p") {
+        if (menuTL.classList.contains(select)) {
+            ppBox.classList.remove("hidden")
+            emptyBox.classList.add("hidden")
+            menuBox.style.flex = "3"
+            playButton()
+            menuState = 0
+        }
+        else if (menuTR.classList.contains(select)) {
+            
+        }
+        else if (menuBL.classList.contains(select)) {
+            
+        }
+        else if (menuBR.classList.contains(select)) {
+            
+        }
+    }
+    else if (menuState == 0 && e.key == "o") {
+        ppBox.classList.add('hidden')
+        emptyBox.classList.remove("hidden")
+        menuBox.style.flex = "4"
+        menuState = 1
+        playButton()
+    }
+    
 }
