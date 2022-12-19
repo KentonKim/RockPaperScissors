@@ -133,3 +133,23 @@ html, body {
 .hidden {
     display: none;
 }
+
+#type-box {
+    /*This part is important for centering*/
+    display: grid;
+    place-items: start;
+  }
+  
+#typing {
+    width: 10ch;
+    animation: typing 0.5s steps(22), step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@keyframes typing {
+from {
+    width: 0
+}
+}
+    
