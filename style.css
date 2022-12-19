@@ -1,0 +1,135 @@
+@font-face {
+    font-family: pkfont;
+    src: url(pkfont.ttf);
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'pkfont';
+}
+
+html, body {
+    height: 100%;
+}
+
+.screen {
+    display: flex;
+    flex-flow: column;
+    position: relative;
+    width: 900px;
+    height: 600px;
+}
+
+#battleground {
+}
+
+/* Text box*/
+
+.chat-outer {
+    background-color: #393442;
+    position: inherit;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    padding: 10px;
+}
+
+.chat-mid {
+    background-color: #ab2a20;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    padding: 5px 15px;
+
+}
+
+.chat-inner {
+    box-sizing: border-box;
+    background-color: #279185;
+    border-radius: 20px;
+    color: #f2ecdc;
+    flex: 1;
+    padding: 30px;
+
+    text-shadow: 2px 2px 4px #1f1b36;
+    font-size: 56px;
+}
+
+/* Menu */
+.menu-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 178px;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+.empty {
+    flex: 6;
+}
+
+#menu-main {
+    flex: 4;
+}
+
+.menu-outline {
+    background-color: #393442;
+    border: 5px solid #393442;
+    border-radius: 10px;
+    display: flex;
+}
+
+.menu-outer {
+    background-color: #685d78;
+    border: 3px solid black;
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px
+}
+
+.menu-inner {
+    background-color: #f2ecdc;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    padding: 10px;
+}
+
+.menu-left, .menu-right {
+    display: flex;
+    flex-flow: column;
+    flex: 1;
+}
+
+#menu-main-options {
+    gap: 10px;
+}
+
+.menu-option {
+    border: 3px solid #f2ecdc;
+    display: flex;
+    align-items: center;
+    flex: 1;
+
+    font-size: 40px;
+    text-shadow: 2px 2px 4px gray;
+}
+
+#pp-main {
+    flex: 1;
+    display: none;
+}
+
+/* Active Items */
+
+.select {
+    border: 3px solid red;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,14 @@
+Dialogue
+
+
+Go! [Pokemon]!
+[Pokemon] used <br> [attack move]!
+Foe [Pokemon] used <br> [attack move]!
+
+It's super effective!
+It's not very effective...
+
+Foe [Pokemon]'s [status effect] <br> rose!
+[Pokemon]'s [status] fell!
+
+What should <br> [Pokemon] do?
