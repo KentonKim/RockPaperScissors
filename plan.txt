@@ -12,3 +12,39 @@ Foe [Pokemon]'s [status effect] <br> rose!
 [Pokemon]'s [status] fell!
 
 What should <br> [Pokemon] do?
+
+
+
+Tasks
+- Make HP box
+    - Add Gradient to HP
+    - Names in corrent font
+    - Level system
+    - HP system
+    - Exp system
+
+- Scrolling Dialogue
+
+- Rock move
+    - vs Rock
+    - vs Paper
+    - vs Scissor
+    - vs charge
+- Scissor move
+    - vs Rock
+    - vs Paper
+    - vs Scissor
+    - vs charge
+
+- Paper move
+    - vs Rock
+    - vs Paper
+    - vs Scissor
+    - vs charge
+
+- Charge move 
+    - vs Rock
+    - vs Paper
+    - vs Scissor
+    - vs charge
+
