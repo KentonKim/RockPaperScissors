@@ -23,9 +23,6 @@ let ppTR = 30
 let ppBL= 15
 let ppBR= 5
 
-
-// Dialogue
-
 document.addEventListener('keyup',moveMenu)
 document.addEventListener('keyup',exitMenu)
 menuTL.classList.add(select)

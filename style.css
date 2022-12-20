@@ -123,6 +123,65 @@ html, body {
     flex: 1;
 }
 
+/* HP Boxes */
+.hp-outer {
+    border: 3px solid #50635c;
+    background-color: #50635c;
+    border-radius: 13px;
+    width: 30%;
+    position: absolute;
+}
+
+#foe-outer {
+    left: 70px;
+    top: 65px;
+}
+
+#user-outer {
+    left: 515px;
+    top: 290px;
+}
+.hp-inner {
+    background-color: #ffeec2;
+    border: 3px solid #0b2e07;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column;
+}
+
+.hp-bot {
+    background-color: #50625c;
+    border: 2px solid #50625c;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    height: 16px;
+    width: 70%;
+
+}
+
+.hp-container {
+    display: flex;
+    flex: 1;
+    border: 2px solid white;
+    background-color: white;
+    border-radius: 20px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hp-green {
+    background-color: #7dff93;
+    flex: 1;
+}
+
+.hp-black {
+    background-color: #50635c;
+    flex: 1;
+}
+
 /* Active Items */
 
 .select {
