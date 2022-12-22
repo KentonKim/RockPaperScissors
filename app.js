@@ -12,8 +12,8 @@ const userHpBlack = document.querySelector('#user-hp-black')
 const foeHpBlack = document.querySelector('#foe-hp-black')
 
 let menuState = 1
-let userHP = 100
-let foeHP = 100
+let userHP = 64 
+let foeHP = 64 
 
 const dialogueList = 
     ["What will USER do?",
@@ -28,14 +28,15 @@ const menuTR = menuOptions[2] // Bag / Paper
 const menuBR = menuOptions[3] // Run / Charge
 const select = 'select'
 
+const damage =  16 // How much damage is done
 const ppTLcap = 5 // Rock
-const ppTRcap = 30 // Paper
-const ppBLcap = 15 // Scissor
+const ppTRcap = 5 // Paper
+const ppBLcap = 5 // Scissor
 const ppBRcap = 5 // Charge
-let ppTL = 5
-let ppTR = 30
-let ppBL= 15
-let ppBR= 5
+let ppTL = ppTLcap 
+let ppTR = ppTRcap 
+let ppBL= ppBLcap
+let ppBR= ppBRcap
 
 let userMoves = []
 let computerMoves = []
@@ -110,7 +111,7 @@ function ppUpdate() {
             ppCount.innerHTML = "PP " + ppTL + "/" + ppTLcap
         }
         else if (menuOptions[1].classList.contains(select)) { // Scissor
-            ppType.innerHTML = 'DRAGON'
+            ppType.innerHTML = 'STEEL'
             ppCount.innerHTML = "PP " + ppBL + "/" + ppBLcap
         }
         else if (menuOptions[2].classList.contains(select)) { // Paper
@@ -209,10 +210,7 @@ function storeAttack() {
     }
 
     // store attack for computer
-    // computerMoves.unshift(moveList[Math.floor(Math.random()*4)])
-    computerMoves.unshift(moveList[0])
-    console.log('user chose ' + userMoves[0])
-    console.log('computer chose ' + computerMoves[0])
+    computerMoves.unshift(moveList[Math.floor(Math.random()*4)])
 }
 
 function fightSequence() {
@@ -223,6 +221,52 @@ function fightSequence() {
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
         setTimeout(() => { textBox.innerHTML = "But it failed!" }, 6000)
     }
+    // User wins
+    else if ((userMoves[0] == moveList[0] && computerMoves[0] == moveList[1]) 
+    || (userMoves[0] == moveList[1] && computerMoves[0] == moveList[2]) 
+    || (userMoves[0] == moveList[2] && computerMoves[0] == moveList[0])) {
+        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+        setTimeout(() => {inflictDamage(foeHpGreen, foeHpBlack) }, 2000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 6000)
+    }
+    // Computer wins
+    else if ((userMoves[0] == moveList[2] && computerMoves[0] == moveList[1]) 
+    || (userMoves[0] == moveList[0] && computerMoves[0] == moveList[2]) 
+    || (userMoves[0] == moveList[1] && computerMoves[0] == moveList[0])) {
+        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 2000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => {inflictDamage(userHpGreen, userHpBlack) }, 6000)
+    }
+
+    // Computer charges
+    else if (userMoves[0] != moveList[3] && computerMoves[0] == moveList[3]) {
+        textBox.innerHTML = "FOE used " + computerMoves[0] + '!'
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
+        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves[0] + '!'}, 4000)
+        setTimeout(() => {inflictDamage(foeHpGreen, foeHpBlack, 0.5) }, 6000)
+    }
+
+    // User charges
+    else if (userMoves[0] == moveList[3] && computerMoves[0] != moveList[3]) {
+        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => {inflictDamage(userHpGreen, userHpBlack, 0.5) }, 6000)
+    }
+
+    // Both charges
+    else if (userMoves[0] == computerMoves[0] && userMoves[0] == moveList[3]) {
+        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 6000)
+    }
+}
+
+function inflictDamage(green, black, reduction = 1) {
+    console.log('damage')
 }
 
 function returnToState(option) {
