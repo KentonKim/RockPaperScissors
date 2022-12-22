@@ -6,13 +6,22 @@ const emptyBox = document.querySelector(".empty")
 const textBox   = document.querySelector('#typing')
 const ppType = document.querySelector('#move-type')
 const ppCount = document.querySelector('#pp-count')
+const userHpGreen = document.querySelector('#user-hp-green')
+const foeHpGreen = document.querySelector('#foe-hp-green')
+const userHpBlack = document.querySelector('#user-hp-black')
+const foeHpBlack = document.querySelector('#foe-hp-black')
+
 let menuState = 1
+let userHP = 100
+let foeHP = 100
 
 const dialogueList = 
     ["What will USER do?",
     "You don't have any more Pokemon to use!",
     'Your bag is empty!',
     "Can't escape!"]
+const moveList =
+    ['ROCK','SCISSOR','PAPER','CHARGE']
 const menuTL = menuOptions[0] // Fight / Rock
 const menuBL = menuOptions[1] // Pokemon / Scissor
 const menuTR = menuOptions[2] // Bag / Paper
@@ -27,6 +36,9 @@ let ppTL = 5
 let ppTR = 30
 let ppBL= 15
 let ppBR= 5
+
+let userMoves = []
+let computerMoves = []
 
 document.addEventListener('keyup',moveMenu)
 document.addEventListener('keyup',pressingAB)
@@ -122,50 +134,40 @@ function pressingAB(e) {
     // Selecting from menu
     if (menuState == 1 && e.key == "p") {
         if (menuTL.classList.contains(select)) {
-            menuState = 2 // attack menu
-            ppBox.classList.remove("hidden")
-            emptyBox.classList.add("hidden")
-            menuBox.style.flex = "3"
-            menuTL.innerHTML = 'ROCK'
-            menuTR.innerHTML = 'PAPER'
-            menuBL.innerHTML = 'SCISSORS'
-            menuBR.innerHTML = 'CHARGE'
-            playButton()
+            returnToState('moves')
             ppUpdate()
         }
         else {
-            menuState = 0
-            menuBox.classList.add("hidden")
-            playButton()
+            returnToState('dialogue')
             menuDialogue()
         }
+        playButton()
     }
 
-    // Going back to menu from non-fight optiono
+    // Going back to menu from non-fight option
     else if (menuState == 0 && e.key == 'p') {
-        menuState = 1
+        returnToState('main')
         menuDialogue()
-        menuBox.classList.remove('hidden')
     }
 
     // Selecting an Attack
     else if (menuState == 2 && e.key == "p") {
+        returnToState('attack')
+        storeAttack()
+        playButton()
+        fightSequence()
 
+        setTimeout(() => {
+            returnToState('main') 
+            menuDialogue() 
+        }, 8000);
     }
 
     // Cancelling back to Menu
     else if (menuState == 2 && e.key == "o") {
-        ppBox.classList.add('hidden')
-        emptyBox.classList.remove("hidden")
-        menuBox.style.flex = "4"
-        menuTL.innerHTML = 'FIGHT'
-        menuTR.innerHTML = 'BAG'
-        menuBL.innerHTML = 'POKEMON'
-        menuBR.innerHTML = 'RUN'
-        menuState = 1
+        returnToState('main')
         playButton()
     }
-    
 }
 
 function menuDialogue() {
@@ -183,5 +185,80 @@ function menuDialogue() {
 
     if (menuState == 1) {
         textBox.innerHTML = dialogueList[0]
+    }
+}
+
+function storeAttack() {
+    // store attack for user
+    if (menuOptions[0].classList.contains(select)) {
+        // Rock
+        userMoves.unshift(moveList[0])
+        console.log(userMoves)
+    }
+    else if (menuOptions[1].classList.contains(select)) {
+        // Scissor 
+        userMoves.unshift(moveList[1])
+    }
+    else if (menuOptions[2].classList.contains(select)) {
+        // Paper
+        userMoves.unshift(moveList[2])
+    }
+    else if (menuOptions[3].classList.contains(select)) {
+        // Charge
+        userMoves.unshift(moveList[3])
+    }
+
+    // store attack for computer
+    // computerMoves.unshift(moveList[Math.floor(Math.random()*4)])
+    computerMoves.unshift(moveList[0])
+    console.log('user chose ' + userMoves[0])
+    console.log('computer chose ' + computerMoves[0])
+}
+
+function fightSequence() {
+    // tie
+    if (userMoves[0] == computerMoves[0] && userMoves[0] != moveList[3]) {
+        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 2000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 6000)
+    }
+}
+
+function returnToState(option) {
+    if (option == 'dialogue'){
+        // dialogue
+        menuBox.classList.add("hidden")
+        ppBox.classList.add('hidden')
+        emptyBox.classList.remove("hidden")
+        menuState = 0
+    }
+    else if (option == 'main'){
+        // main menu
+        if (!ppBox.classList.contains('hidden')) { ppBox.classList.add('hidden') }
+        if (menuBox.classList.contains('hidden')) { menuBox.classList.remove('hidden')}
+        emptyBox.classList.remove("hidden")
+        menuBox.style.flex = "4"
+        menuTL.innerHTML = 'FIGHT'
+        menuTR.innerHTML = 'BAG'
+        menuBL.innerHTML = 'POKEMON'
+        menuBR.innerHTML = 'RUN'
+        menuState = 1
+    }
+    else if (option == 'moves'){
+        // attack menu
+        ppBox.classList.remove("hidden")
+        emptyBox.classList.add("hidden")
+        menuBox.style.flex = "3"
+        menuTL.innerHTML = 'ROCK'
+        menuTR.innerHTML = 'PAPER'
+        menuBL.innerHTML = 'SCISSORS'
+        menuBR.innerHTML = 'CHARGE'
+        menuState = 2
+    }
+    else if (option == 'attack'){
+        ppBox.classList.add('hidden')
+        menuBox.classList.add("hidden")
+        menuState = 3 // attack sequence
     }
 }

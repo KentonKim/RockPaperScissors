@@ -93,10 +93,11 @@ html, body {
 
 .menu-inner {
     background-color: #f2ecdc;
+    border: 3px solid #d9d4c6;
     border-radius: 10px;
     height: 100%;
     display: flex;
-    padding: 10px;
+    padding: 9px;
 }
 
 .menu-left, .menu-right {
@@ -174,12 +175,12 @@ html, body {
 
 .hp-green {
     background-color: #7dff93;
-    flex: 1;
+    flex: 100;
 }
 
 .hp-black {
     background-color: #50635c;
-    flex: 1;
+    flex: 100;
 }
 
 /* Active Items */

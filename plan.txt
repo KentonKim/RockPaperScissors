@@ -25,26 +25,32 @@ Tasks
 
 - Scrolling Dialogue
 
-- Rock move
-    - vs Rock
-    - vs Paper
-    - vs Scissor
-    - vs charge
-- Scissor move
-    - vs Rock
-    - vs Paper
-    - vs Scissor
-    - vs charge
+move
 
-- Paper move
-    - vs Rock
-    - vs Paper
-    - vs Scissor
-    - vs charge
+Scissor
+Rock
+Paper
 
-- Charge move 
-    - vs Rock
-    - vs Paper
-    - vs Scissor
-    - vs charge
 
+Scissors vs Rock 
+- Enemy 10% flinch 
+
+Scissors vs Paper
+- Enemy 70% flinch
+
+Scissors vs Scissors
+- No special effect
+
+Paper vs Scissors
+- 
+
+Paper vs Paper
+
+Paper vs Rock
+
+
+Rock vs Rock
+
+Rock vs Paper
+
+Rock vs Scissors
