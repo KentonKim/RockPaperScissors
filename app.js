@@ -153,15 +153,20 @@ function pressingAB(e) {
 
     // Selecting an Attack
     else if (menuState == 2 && e.key == "p") {
-        returnToState('attack')
-        storeAttack()
-        playButton()
-        fightSequence()
-
-        setTimeout(() => {
-            returnToState('main') 
-            menuDialogue() 
-        }, 8000);
+        if (checkPP()){
+            returnToState('attack')
+            storeAttack()
+            playButton()
+            fightSequence()
+            setTimeout(() => {
+                returnToState('main') 
+                menuDialogue() 
+            }, 8000);
+        }
+        else {
+            returnToState('dialogue')
+            textBox.innerHTML = "There's no PP left for <br> this move!"
+        }
     }
 
     // Cancelling back to Menu
@@ -189,24 +194,52 @@ function menuDialogue() {
     }
 }
 
+function checkPP() {
+        if (menuOptions[0].classList.contains(select)) {
+            if (ppTL != 0) {
+                return true
+            }
+        }
+        else if (menuOptions[1].classList.contains(select)) {
+            if (ppBL != 0) {
+                return true
+            }
+        }
+        else if (menuOptions[2].classList.contains(select)) {
+            if (ppTR != 0) {
+                return true
+            }
+        }
+        else if (menuOptions[3].classList.contains(select)) {
+            if (ppBR != 0) {
+                return true
+            }
+        }
+    return false
+}
+
 function storeAttack() {
     // store attack for user
+    // reduce pp
     if (menuOptions[0].classList.contains(select)) {
         // Rock
         userMoves.unshift(moveList[0])
-        console.log(userMoves)
+        ppTL -= 1
     }
     else if (menuOptions[1].classList.contains(select)) {
         // Scissor 
         userMoves.unshift(moveList[1])
+        ppBL -= 1
     }
     else if (menuOptions[2].classList.contains(select)) {
         // Paper
         userMoves.unshift(moveList[2])
+        ppTR -= 1
     }
     else if (menuOptions[3].classList.contains(select)) {
         // Charge
         userMoves.unshift(moveList[3])
+        ppBR -= 1
     }
 
     // store attack for computer
@@ -226,7 +259,10 @@ function fightSequence() {
     || (userMoves[0] == moveList[1] && computerMoves[0] == moveList[2]) 
     || (userMoves[0] == moveList[2] && computerMoves[0] == moveList[0])) {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
-        setTimeout(() => {inflictDamage(foeHpGreen, foeHpBlack) }, 2000)
+        setTimeout(() => {
+            inflictDamage(foeHP, foeHpGreen, foeHpBlack) 
+            foeHP -= damage
+        }, 2000)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 6000)
     }
@@ -237,7 +273,10 @@ function fightSequence() {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 2000)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
-        setTimeout(() => {inflictDamage(userHpGreen, userHpBlack) }, 6000)
+        setTimeout(() => {
+            inflictDamage(userHP, userHpGreen, userHpBlack) 
+            userHP -= damage
+        }, 6000)
     }
 
     // Computer charges
@@ -245,7 +284,10 @@ function fightSequence() {
         textBox.innerHTML = "FOE used " + computerMoves[0] + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
         setTimeout(() => {textBox.innerHTML = "USER used " + userMoves[0] + '!'}, 4000)
-        setTimeout(() => {inflictDamage(foeHpGreen, foeHpBlack, 0.5) }, 6000)
+        setTimeout(() => {
+            inflictDamage(foeHP, foeHpGreen, foeHpBlack, 0.5) 
+            foeHP -= 0.5*damage
+        }, 6000)
     }
 
     // User charges
@@ -253,7 +295,10 @@ function fightSequence() {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
-        setTimeout(() => {inflictDamage(userHpGreen, userHpBlack, 0.5) }, 6000)
+        setTimeout(() => {
+            inflictDamage(userHP, userHpGreen, userHpBlack, 0.5) 
+            userHP -= -0.5*damage
+        }, 6000)
     }
 
     // Both charges
@@ -265,8 +310,10 @@ function fightSequence() {
     }
 }
 
-function inflictDamage(green, black, reduction = 1) {
-    console.log('damage')
+function inflictDamage(hp, green, black, reduction = 1) {
+    let newhp = (hp-(damage*reduction))
+    green.style.flex = newhp.toString()
+    black.style.flex = (64-newhp).toString()
 }
 
 function returnToState(option) {

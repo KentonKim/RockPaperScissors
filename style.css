@@ -175,12 +175,12 @@ html, body {
 
 .hp-green {
     background-color: #7dff93;
-    flex: 100;
+    flex: 64;
 }
 
 .hp-black {
     background-color: #50635c;
-    flex: 100;
+    flex: 0;
 }
 
 /* Active Items */
