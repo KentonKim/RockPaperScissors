@@ -183,6 +183,24 @@ html, body {
     flex: 0;
 }
 
+/* Pokemon */
+.sprite {
+    width: 250px;
+    height: 250px;
+}
+
+#user-sprite {
+    position: absolute;
+    top: 220px;
+    left: 100px;
+}
+
+#foe-sprite {
+    position: absolute;
+    top: 80px;
+    left: 530px;
+}
+
 /* Active Items */
 
 .select {

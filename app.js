@@ -10,6 +10,8 @@ const userHpGreen = document.querySelector('#user-hp-green')
 const foeHpGreen = document.querySelector('#foe-hp-green')
 const userHpBlack = document.querySelector('#user-hp-black')
 const foeHpBlack = document.querySelector('#foe-hp-black')
+const userSprite = document.querySelector("#user-sprite")
+const foeSprite = document.querySelector("#foe-sprite")
 
 let menuState = 1
 let userHP = 64 
@@ -161,7 +163,7 @@ function pressingAB(e) {
             setTimeout(() => {
                 returnToState('main') 
                 menuDialogue() 
-            }, 8000);
+            }, 5000);
         }
         else {
             returnToState('dialogue')
@@ -250,9 +252,9 @@ function fightSequence() {
     // tie
     if (userMoves[0] == computerMoves[0] && userMoves[0] != moveList[3]) {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
-        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 2000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
-        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 6000)
+        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 1500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 4000)
     }
     // User wins
     else if ((userMoves[0] == moveList[0] && computerMoves[0] == moveList[1]) 
@@ -262,51 +264,51 @@ function fightSequence() {
         setTimeout(() => {
             inflictDamage(foeHP, foeHpGreen, foeHpBlack) 
             foeHP -= damage
-        }, 2000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
-        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 6000)
+        }, 1000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
     }
     // Computer wins
     else if ((userMoves[0] == moveList[2] && computerMoves[0] == moveList[1]) 
     || (userMoves[0] == moveList[0] && computerMoves[0] == moveList[2]) 
     || (userMoves[0] == moveList[1] && computerMoves[0] == moveList[0])) {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
-        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 2000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
         setTimeout(() => {
             inflictDamage(userHP, userHpGreen, userHpBlack) 
             userHP -= damage
-        }, 6000)
+        }, 3500)
     }
 
     // Computer charges
     else if (userMoves[0] != moveList[3] && computerMoves[0] == moveList[3]) {
         textBox.innerHTML = "FOE used " + computerMoves[0] + '!'
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
-        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves[0] + '!'}, 4000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
+        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves[0] + '!'}, 2500)
         setTimeout(() => {
             inflictDamage(foeHP, foeHpGreen, foeHpBlack, 0.5) 
             foeHP -= 0.5*damage
-        }, 6000)
+        }, 3500)
     }
 
     // User charges
     else if (userMoves[0] == moveList[3] && computerMoves[0] != moveList[3]) {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
         setTimeout(() => {
             inflictDamage(userHP, userHpGreen, userHpBlack, 0.5) 
             userHP -= -0.5*damage
-        }, 6000)
+        }, 3500)
     }
 
     // Both charges
     else if (userMoves[0] == computerMoves[0] && userMoves[0] == moveList[3]) {
         textBox.innerHTML = "USER used " + userMoves[0] + '!'
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 2000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 4000)
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 6000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 3500)
     }
 }
 
