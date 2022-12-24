@@ -158,10 +158,14 @@ function pressingAB(e) {
             storeAttack()
             playButton()
             fightSequence()
+            console.log('health points')
+            console.log(userHP)
+            console.log(foeHP)
             setTimeout(() => {
                 returnToState('main') 
                 menuDialogue() 
             }, 8000);
+
         }
         else {
             returnToState('dialogue')
