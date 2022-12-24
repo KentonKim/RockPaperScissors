@@ -18,39 +18,17 @@ What should <br> [Pokemon] do?
 Tasks
 - Make HP box
     - Add Gradient to HP
-    - Names in corrent font
     - Level system
     - HP system
     - Exp system
 
 - Scrolling Dialogue
 
-move
-
-Scissor
-Rock
-Paper
 
 
-Scissors vs Rock 
-- Enemy 10% flinch 
-
-Scissors vs Paper
-- Enemy 70% flinch
-
-Scissors vs Scissors
-- No special effect
-
-Paper vs Scissors
-- 
-
-Paper vs Paper
-
-Paper vs Rock
-
-
-Rock vs Rock
-
-Rock vs Paper
-
-Rock vs Scissors
+Animation
+- actual attack animation
+- attack sound
+- hp animation
+- blink 4 times animation
+- hurt sound

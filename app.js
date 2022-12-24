@@ -16,6 +16,8 @@ const foeSprite = document.querySelector("#foe-sprite")
 let menuState = 1
 let userHP = 64 
 let foeHP = 64 
+let userReduction = [1, 1]
+let foeReduction = [1,1]
 
 const dialogueList = 
     ["What will USER do?",
@@ -40,8 +42,8 @@ let ppTR = ppTRcap
 let ppBL= ppBLcap
 let ppBR= ppBRcap
 
-let userMoves = []
-let computerMoves = []
+let userMoves = '' 
+let computerMoves = '' 
 
 document.addEventListener('keyup',moveMenu)
 document.addEventListener('keyup',pressingAB)
@@ -225,97 +227,126 @@ function storeAttack() {
     // reduce pp
     if (menuOptions[0].classList.contains(select)) {
         // Rock
-        userMoves.unshift(moveList[0])
+        userMoves = moveList[0]
         ppTL -= 1
     }
     else if (menuOptions[1].classList.contains(select)) {
         // Scissor 
-        userMoves.unshift(moveList[1])
+        userMoves = moveList[1]
         ppBL -= 1
     }
     else if (menuOptions[2].classList.contains(select)) {
         // Paper
-        userMoves.unshift(moveList[2])
+        userMoves = moveList[2]
         ppTR -= 1
     }
     else if (menuOptions[3].classList.contains(select)) {
         // Charge
-        userMoves.unshift(moveList[3])
+        userMoves = moveList[3]
         ppBR -= 1
     }
 
     // store attack for computer
-    computerMoves.unshift(moveList[Math.floor(Math.random()*4)])
+    computerMoves = moveList[Math.floor(Math.random()*4)]
+
+    console.log('user chose ' + userMoves)
+    console.log('foe chose ' + computerMoves)
 }
 
 function fightSequence() {
     // tie
-    if (userMoves[0] == computerMoves[0] && userMoves[0] != moveList[3]) {
-        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+    if (userMoves == computerMoves && userMoves != moveList[3]) {
+        textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => { textBox.innerHTML = "But it failed!" }, 1500)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => { textBox.innerHTML = "But it failed!" }, 4000)
     }
     // User wins
-    else if ((userMoves[0] == moveList[0] && computerMoves[0] == moveList[1]) 
-    || (userMoves[0] == moveList[1] && computerMoves[0] == moveList[2]) 
-    || (userMoves[0] == moveList[2] && computerMoves[0] == moveList[0])) {
-        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+    else if ((userMoves == moveList[0] && computerMoves == moveList[1]) 
+    || (userMoves == moveList[1] && computerMoves == moveList[2]) 
+    || (userMoves == moveList[2] && computerMoves == moveList[0])) {
+        textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {
-            inflictDamage(foeHP, foeHpGreen, foeHpBlack) 
-            foeHP -= damage
+            inflictDamage(foeHP, foeHpGreen, foeHpBlack, foeReduction) 
+            foeHP -= foeReduction[0]*damage
         }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
     }
     // Computer wins
-    else if ((userMoves[0] == moveList[2] && computerMoves[0] == moveList[1]) 
-    || (userMoves[0] == moveList[0] && computerMoves[0] == moveList[2]) 
-    || (userMoves[0] == moveList[1] && computerMoves[0] == moveList[0])) {
-        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+    else if ((userMoves == moveList[2] && computerMoves == moveList[1]) 
+    || (userMoves == moveList[0] && computerMoves == moveList[2]) 
+    || (userMoves == moveList[1] && computerMoves == moveList[0])) {
+        textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => {
-            inflictDamage(userHP, userHpGreen, userHpBlack) 
-            userHP -= damage
+            inflictDamage(userHP, userHpGreen, userHpBlack, userReduction) 
+            userHP -= userReduction[0]*damage
         }, 3500)
     }
 
     // Computer charges
-    else if (userMoves[0] != moveList[3] && computerMoves[0] == moveList[3]) {
-        textBox.innerHTML = "FOE used " + computerMoves[0] + '!'
+    else if (userMoves != moveList[3] && computerMoves == moveList[3]) {
+
+        textBox.innerHTML = "FOE used " + computerMoves + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, 2500)
         setTimeout(() => {
-            inflictDamage(foeHP, foeHpGreen, foeHpBlack, 0.5) 
-            foeHP -= 0.5*damage
+            // reduce stats
+            foeReduction[0] *= 0.5
+            userReduction[1] *= 2
+            inflictDamage(foeHP, foeHpGreen, foeHpBlack, foeReduction) 
+            foeHP -= foeReduction[0]*damage
         }, 3500)
     }
 
     // User charges
-    else if (userMoves[0] == moveList[3] && computerMoves[0] != moveList[3]) {
-        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+    else if (userMoves == moveList[3] && computerMoves != moveList[3]) {
+        textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => {
-            inflictDamage(userHP, userHpGreen, userHpBlack, 0.5) 
-            userHP -= -0.5*damage
+            // reduce stats
+            userReduction[0] *= 0.5
+            foeReduction[1] *= 2
+            inflictDamage(userHP, userHpGreen, userHpBlack, userReduction) 
+            userHP -= userReduction[0]*damage
         }, 3500)
     }
 
     // Both charges
-    else if (userMoves[0] == computerMoves[0] && userMoves[0] == moveList[3]) {
-        textBox.innerHTML = "USER used " + userMoves[0] + '!'
+    else if (userMoves == computerMoves && userMoves == moveList[3]) {
+        // reduce stats
+        userReduction[1] *= 2
+        foeReduction[1] *= 2
+
+        textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves[0] + '!'}, 2500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 3500)
     }
+
+    // update reduction arrays 
+    setTimeout(() => {
+        console.log(userReduction)
+        console.log(foeReduction)
+        userReduction = userReduction.slice(1)
+        foeReduction = foeReduction.slice(1)
+        userReduction.push(1)
+        foeReduction.push(1)
+    }, 6000);
 }
 
-function inflictDamage(hp, green, black, reduction = 1) {
-    let newhp = (hp-(damage*reduction))
+function inflictDamage(hp, green, black, multiplier) {
+    let newhp = (hp-(damage*multiplier[0]))
     green.style.flex = newhp.toString()
     black.style.flex = (64-newhp).toString()
+    
+    // trigger end phase if less than 0
+    if (newhp <= 0) {
+        triggerEnd()
+    }
 }
 
 function returnToState(option) {
