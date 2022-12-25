@@ -1,34 +1,18 @@
-Dialogue
+JS tasks
+- trigger end music
+- end phase
 
 
-Go! [Pokemon]!
-[Pokemon] used <br> [attack move]!
-Foe [Pokemon] used <br> [attack move]!
-
-It's super effective!
-It's not very effective...
-
-Foe [Pokemon]'s [status effect] <br> rose!
-[Pokemon]'s [status] fell!
-
-What should <br> [Pokemon] do?
+aesthetics
+- hp gradient
+- exp bar
 
 
 
-Tasks
-- Make HP box
-    - Add Gradient to HP
-    - Level system
-    - HP system
-    - Exp system
-
-- Scrolling Dialogue
-
-
-
-Animation
-- actual attack animation
-- attack sound
-- hp animation
-- blink 4 times animation
-- hurt sound
+Animation tasks
+- battle start animation
+	- grasses move around
+	- pokemon slide in
+	- pokemon change sprites and make noise
+- attack animation
+- fainted animation
