@@ -20,6 +20,8 @@ const audioRock = document.querySelector('#audio-rock')
 const audioScissor = document.querySelector('#audio-scissor')
 const audioPaper = document.querySelector('#audio-paper')
 
+const overlay = document.querySelector('.overlay')
+
 let menuState = 1
 let userHP = 64 
 let foeHP = 64 
@@ -27,14 +29,24 @@ let userReduction = [1, 1]
 let foeReduction = [1,1]
 
 
-// battle theme
-battleButton.addEventListener('mouseup', () => {
-    audioBattle.currentTime = 2.95
+// starts everything
+overlay.addEventListener('mouseup', ()=> {
     audioBattle.play()
+    audioBattle.volume = 0.2
+    overlay.classList.remove('overlay')
+    setInterval(songEnd, 100)
 })
 
-// setInterval(repeatBattle,100)
+function songEnd() {
+    if(audioBattle.currentTime > 81.5) {
+        audioBattle.currentTime = 2.95
+    }
+}
 
+// battle theme
+battleButton.addEventListener('mouseup', () => {
+    audioBattle.muted = true
+})
 
 
 const dialogueList = 
@@ -180,15 +192,6 @@ function pressingAB(e) {
             storeAttack()
             playButton()
             fightSequence()
-            setTimeout(() => {
-                if (userHP <= 0 || foeHP <=0){
-                    triggerEnd()
-                }
-                else {
-                    returnToState('main') 
-                    menuDialogue() 
-                }
-            }, 5000);
         }
         else {
             returnToState('dialogue')
@@ -250,24 +253,29 @@ function storeAttack() {
     // reduce pp
     if (menuOptions[0].classList.contains(select)) {
         // Rock
+        menuOptions[0].classList.remove(select)
         userMoves = moveList[0]
         ppTL -= 1
     }
     else if (menuOptions[1].classList.contains(select)) {
         // Scissor 
+        menuOptions[1].classList.remove(select)
         userMoves = moveList[1]
         ppBL -= 1
     }
     else if (menuOptions[2].classList.contains(select)) {
         // Paper
+        menuOptions[2].classList.remove(select)
         userMoves = moveList[2]
         ppTR -= 1
     }
     else if (menuOptions[3].classList.contains(select)) {
         // Charge
+        menuOptions[3].classList.remove(select)
         userMoves = moveList[3]
         ppBR -= 1
     }
+    menuOptions[0].classList.add(select)
 
     // store attack for computer
     computerMoves = moveList[Math.floor(Math.random()*4)]
@@ -293,8 +301,17 @@ function fightSequence() {
             inflictDamage(foeHP, foeHpGreen, foeHpBlack, foeReduction) 
             foeHP -= foeReduction[0]*damage
         }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
-        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
+        if (foeHP <= 0){
+            setTimeout(() => {
+                    triggerEnd()
+            }, 2500)
+        }
+        else {
+            setTimeout(() => {
+                textBox.innerHTML = "FOE used " + computerMoves + '!'
+            }, 2500);
+            setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
+        }
     }
     // Computer wins
     else if ((userMoves == moveList[2] && computerMoves == moveList[1]) 
@@ -307,11 +324,13 @@ function fightSequence() {
             inflictDamage(userHP, userHpGreen, userHpBlack, userReduction) 
             userHP -= userReduction[0]*damage
         }, 3500)
+        setTimeout(() => {
+            triggerEnd()
+        }, 5000);
     }
 
     // Computer charges
     else if (userMoves != moveList[3] && computerMoves == moveList[3]) {
-
         textBox.innerHTML = "FOE used " + computerMoves + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
         setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, 2500)
@@ -322,6 +341,9 @@ function fightSequence() {
             inflictDamage(foeHP, foeHpGreen, foeHpBlack, foeReduction) 
             foeHP -= foeReduction[0]*damage
         }, 3500)
+        setTimeout(() => {
+            triggerEnd()
+        }, 5000);
     }
 
     // User charges
@@ -336,6 +358,9 @@ function fightSequence() {
             inflictDamage(userHP, userHpGreen, userHpBlack, userReduction) 
             userHP -= userReduction[0]*damage
         }, 3500)
+        setTimeout(() => {
+            triggerEnd()
+        }, 5000);
     }
 
     // Both charges
@@ -350,6 +375,14 @@ function fightSequence() {
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 3500)
     }
 
+    // return to normal
+    if (foeHP > 0 || userHP > 0) {
+        setTimeout(() => {
+            returnToState('main') 
+            menuDialogue() 
+        }, 5000);
+    }
+
     // update reduction arrays 
     setTimeout(() => {
         console.log(userReduction)
@@ -359,10 +392,14 @@ function fightSequence() {
         userReduction.push(1)
         foeReduction.push(1)
     }, 6000);
+
 }
 
 function inflictDamage(hp, green, black, multiplier) {
     let newhp = (hp-(damage*multiplier[0]))
+    if (newhp < 0) {
+        newhp = 0
+    }
     green.style.flex = newhp.toString()
     black.style.flex = (64-newhp).toString()
 }
@@ -410,9 +447,14 @@ function triggerEnd() {
         textBox.innerHTML = "USER has fainted!" 
         textBox.innerHTML = "USER whited out!" 
     }
-    else {
+    else if (foeHP <=0) {
         textBox.innerHTML = "FOE has fainted!" 
         textBox.innerHTML = "You won!" 
+
+        audioBattle.pause()
+        audioVictory.play()
+        audioVictory.volume = 0.2
+
     }
     // plays death sound
     // gives animation of death to sprite

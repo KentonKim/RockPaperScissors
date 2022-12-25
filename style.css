@@ -8,7 +8,7 @@
     font-family: 'pkfont';
 }
 
-html, body {
+html {
     height: 100%;
 }
 
@@ -18,12 +18,24 @@ body {
     align-items: center;
 }
 
+#outside-menu {
+    width: 50%;
+}
+
 .screen {
     display: flex;
     flex-flow: column;
     position: relative;
     width: 900px;
     height: 600px;
+}
+
+.overlay {
+    background-color: black;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
 }
 
 #battleground {
