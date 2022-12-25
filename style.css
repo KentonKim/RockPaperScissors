@@ -12,6 +12,12 @@ html, body {
     height: 100%;
 }
 
+body {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
 .screen {
     display: flex;
     flex-flow: column;
@@ -79,7 +85,6 @@ html, body {
 .menu-outline {
     background-color: #393442;
     border: 5px solid #393442;
-    border-radius: 10px;
     display: flex;
 }
 

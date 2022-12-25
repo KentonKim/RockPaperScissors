@@ -1,5 +1,4 @@
 const menuOptions = document.querySelectorAll('.menu-option')
-const audioButton = document.querySelector('#audio-button')
 const ppBox = document.querySelector("#pp-main")
 const menuBox = document.querySelector("#menu-main")
 const emptyBox = document.querySelector(".empty")
@@ -12,12 +11,31 @@ const userHpBlack = document.querySelector('#user-hp-black')
 const foeHpBlack = document.querySelector('#foe-hp-black')
 const userSprite = document.querySelector("#user-sprite")
 const foeSprite = document.querySelector("#foe-sprite")
+const battleButton = document.querySelector("#battle-button")
+
+const audioButton = document.querySelector('#audio-button')
+const audioBattle = document.querySelector('#audio-battle')
+const audioVictory = document.querySelector('#audio-victory')
+const audioRock = document.querySelector('#audio-rock')
+const audioScissor = document.querySelector('#audio-scissor')
+const audioPaper = document.querySelector('#audio-paper')
 
 let menuState = 1
 let userHP = 64 
 let foeHP = 64 
 let userReduction = [1, 1]
 let foeReduction = [1,1]
+
+
+// battle theme
+battleButton.addEventListener('mouseup', () => {
+    audioBattle.currentTime = 2.95
+    audioBattle.play()
+})
+
+// setInterval(repeatBattle,100)
+
+
 
 const dialogueList = 
     ["What will USER do?",
@@ -162,12 +180,14 @@ function pressingAB(e) {
             storeAttack()
             playButton()
             fightSequence()
-            console.log('health points')
-            console.log(userHP)
-            console.log(foeHP)
             setTimeout(() => {
-                returnToState('main') 
-                menuDialogue() 
+                if (userHP <= 0 || foeHP <=0){
+                    triggerEnd()
+                }
+                else {
+                    returnToState('main') 
+                    menuDialogue() 
+                }
             }, 5000);
         }
         else {
@@ -345,11 +365,6 @@ function inflictDamage(hp, green, black, multiplier) {
     let newhp = (hp-(damage*multiplier[0]))
     green.style.flex = newhp.toString()
     black.style.flex = (64-newhp).toString()
-    
-    // trigger end phase if less than 0
-    if (newhp <= 0) {
-        triggerEnd()
-    }
 }
 
 function returnToState(option) {
@@ -388,4 +403,19 @@ function returnToState(option) {
         menuBox.classList.add("hidden")
         menuState = 3 // attack sequence
     }
+}
+
+function triggerEnd() {
+    if (userHP <=0) {
+        textBox.innerHTML = "USER has fainted!" 
+        textBox.innerHTML = "USER whited out!" 
+    }
+    else {
+        textBox.innerHTML = "FOE has fainted!" 
+        textBox.innerHTML = "You won!" 
+    }
+    // plays death sound
+    // gives animation of death to sprite
+
+
 }
