@@ -230,7 +230,7 @@ body {
 }
 
 #user-sprite.bobbing {
-    animation: jumping 1s linear forwards;
+    animation: jumping 1s forwards;
     animation-iteration-count: infinite;
 }
 

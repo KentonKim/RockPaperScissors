@@ -1,16 +1,21 @@
 const menuOptions = document.querySelectorAll('.menu-option')
-const ppBox = document.querySelector("#pp-main")
 const menuBox = document.querySelector("#menu-main")
 const emptyBox = document.querySelector(".empty")
 const textBox   = document.querySelector('#typing')
 const ppType = document.querySelector('#move-type')
 const ppCount = document.querySelector('#pp-count')
+const ppBox = document.querySelector("#pp-main")
+
+const userHpBox = document.querySelector('#user-outer')
 const userHpGreen = document.querySelector('#user-hp-green')
-const foeHpGreen = document.querySelector('#foe-hp-green')
 const userHpBlack = document.querySelector('#user-hp-black')
-const foeHpBlack = document.querySelector('#foe-hp-black')
 const userSprite = document.querySelector("#user-sprite")
+
+const foeHpBox = document.querySelector('#foe-outer')
+const foeHpGreen = document.querySelector('#foe-hp-green')
+const foeHpBlack = document.querySelector('#foe-hp-black')
 const foeSprite = document.querySelector("#foe-sprite")
+
 const battleButton = document.querySelector("#battle-button")
 
 const audioButton = document.querySelector('#audio-button')
@@ -54,6 +59,28 @@ let ppBR= ppBRcap
 let userMoves = '' 
 let computerMoves = '' 
 
+// animations
+const hpBoxMoveMan = [
+    { transform: 'translateY(0px)'},
+    { transform: 'translateY(3px)'},
+    { transform: 'translateY(0px)'},
+]
+
+const hpBoxMoveManTiming = {
+    duration: 100,
+    iterations: 1,
+}
+
+const hpBoxHurt = [
+    { transform: 'translateY(-3px)'},
+    { transform: 'translateY(0px)'}
+]
+
+const hpBoxHurtTiming = {
+    duration: 30,
+    iterations: 3,
+}
+
 // starts everything
 overlay.addEventListener('mouseup', ()=> {
     audioBattle.play()
@@ -83,61 +110,54 @@ battleButton.addEventListener('mouseup', () => {
 })
 
 function moveMenu(e) {
-    if (menuState != 0){
-        switch(e.key) {
-            case 'w' : // up 
-                if (menuBL.classList.contains(select)) {
-                    menuTL.classList.add(select)
-                    menuBL.classList.remove(select)
-                    playButton()
-                }
-                if (menuBR.classList.contains(select)) {
-                    menuTR.classList.add(select)
-                    menuBR.classList.remove(select)
-                    playButton()
-                }
-                ppUpdate()
-                break
-            case 'a' : // left
-                if (menuTR.classList.contains(select)) {
-                    menuTL.classList.add(select)
-                    menuTR.classList.remove(select)
-                    playButton()
-                }
-                if (menuBR.classList.contains(select)) {
-                    menuBL.classList.add(select)
-                    menuBR.classList.remove(select)
-                    playButton()
-                }
-                ppUpdate()
-                break
-            case 's' : // down
-                if (menuTL.classList.contains(select)) {
-                    menuBL.classList.add(select)
-                    menuTL.classList.remove(select)
-                    playButton()
-                }
-                if (menuTR.classList.contains(select)) {
-                    menuBR.classList.add(select)
-                    menuTR.classList.remove(select)
-                    playButton()
-                }
-                ppUpdate()
-                break
-            case 'd' : // right
-                if (menuTL.classList.contains(select)) {
-                    menuTR.classList.add(select)
-                    menuTL.classList.remove(select)
-                    playButton()
-                }
-                if (menuBL.classList.contains(select)) {
-                    menuBR.classList.add(select)
-                    menuBL.classList.remove(select)
-                    playButton()
-                }
-                ppUpdate()
-                break
-        } 
+    if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
+        if (menuState != 0){
+            switch(e.key) {
+                case 'w' : // up 
+                    if (menuBL.classList.contains(select)) {
+                        menuTL.classList.add(select)
+                        menuBL.classList.remove(select)
+                    }
+                    if (menuBR.classList.contains(select)) {
+                        menuTR.classList.add(select)
+                        menuBR.classList.remove(select)
+                    }
+                    break
+                case 'a' : // left
+                    if (menuTR.classList.contains(select)) {
+                        menuTL.classList.add(select)
+                        menuTR.classList.remove(select)
+                    }
+                    if (menuBR.classList.contains(select)) {
+                        menuBL.classList.add(select)
+                        menuBR.classList.remove(select)
+                    }
+                    break
+                case 's' : // down
+                    if (menuTL.classList.contains(select)) {
+                        menuBL.classList.add(select)
+                        menuTL.classList.remove(select)
+                    }
+                    if (menuTR.classList.contains(select)) {
+                        menuBR.classList.add(select)
+                        menuTR.classList.remove(select)
+                    }
+                    break
+                case 'd' : // right
+                    if (menuTL.classList.contains(select)) {
+                        menuTR.classList.add(select)
+                        menuTL.classList.remove(select)
+                    }
+                    if (menuBL.classList.contains(select)) {
+                        menuBR.classList.add(select)
+                        menuBL.classList.remove(select)
+                    }
+                    break
+            } 
+            playButton()
+            ppUpdate()
+            userHpBox.animate(hpBoxMoveMan,hpBoxMoveManTiming)
+        }
     }
 }
 
@@ -180,12 +200,14 @@ function pressingAB(e) {
             menuDialogue()
         }
         playButton()
+        userHpBox.animate(hpBoxMoveMan,hpBoxMoveManTiming)
     }
 
     // Going back to menu from non-fight option
     else if (menuState == 0 && e.key == 'p') {
         returnToState('main')
         menuDialogue()
+        userHpBox.animate(hpBoxMoveMan,hpBoxMoveManTiming)
     }
 
     // Selecting an Attack
@@ -200,12 +222,14 @@ function pressingAB(e) {
             returnToState('dialogue')
             textBox.innerHTML = "There's no PP left for <br> this move!"
         }
+        userHpBox.animate(hpBoxMoveMan,hpBoxMoveManTiming)
     }
 
     // Cancelling back to Menu
     else if (menuState == 2 && e.key == "o") {
         returnToState('main')
         playButton()
+        userHpBox.animate(hpBoxMoveMan,hpBoxMoveManTiming)
     }
 }
 
@@ -301,7 +325,7 @@ function fightSequence() {
     || (userMoves == moveList[2] && computerMoves == moveList[0])) {
         textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {
-            inflictDamage(foeHP, foeHpGreen, foeHpBlack, foeReduction) 
+            inflictDamage(foeHpBox,foeHP, foeHpGreen, foeHpBlack, foeReduction) 
             foeHP -= foeReduction[0]*damage
         }, 1000)
         if (foeHP <= 0){
@@ -324,7 +348,7 @@ function fightSequence() {
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => {
-            inflictDamage(userHP, userHpGreen, userHpBlack, userReduction) 
+            inflictDamage(userHpBox, userHP, userHpGreen, userHpBlack, userReduction) 
             userHP -= userReduction[0]*damage
         }, 3500)
         setTimeout(() => {
@@ -341,7 +365,7 @@ function fightSequence() {
             // reduce stats
             foeReduction[0] *= 0.5
             userReduction[1] *= 2
-            inflictDamage(foeHP, foeHpGreen, foeHpBlack, foeReduction) 
+            inflictDamage(foeHpBox, foeHP, foeHpGreen, foeHpBlack, foeReduction) 
             foeHP -= foeReduction[0]*damage
         }, 3500)
         setTimeout(() => {
@@ -358,7 +382,7 @@ function fightSequence() {
             // reduce stats
             userReduction[0] *= 0.5
             foeReduction[1] *= 2
-            inflictDamage(userHP, userHpGreen, userHpBlack, userReduction) 
+            inflictDamage(userHpBox, userHP, userHpGreen, userHpBlack, userReduction) 
             userHP -= userReduction[0]*damage
         }, 3500)
         setTimeout(() => {
@@ -398,7 +422,7 @@ function fightSequence() {
 
 }
 
-function inflictDamage(hp, green, black, multiplier) {
+function inflictDamage(box, hp, green, black, multiplier) {
     let newhp = (hp-(damage*multiplier[0]))
     if (newhp < 0) {
         newhp = 0
@@ -411,6 +435,8 @@ function inflictDamage(hp, green, black, multiplier) {
     }
     green.style.flex = newhp.toString()
     black.style.flex = (64-newhp).toString()
+
+    box.animate(hpBoxHurt,hpBoxHurtTiming)
 }
 
 function returnToState(option) {
