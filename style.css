@@ -229,4 +229,16 @@ body {
     display: none;
 }
 
-   
+#user-sprite.bobbing {
+    animation: jumping 1s linear forwards;
+    animation-iteration-count: infinite;
+}
+
+@keyframes jumping {
+    50% {
+        transform: translateY(3px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}

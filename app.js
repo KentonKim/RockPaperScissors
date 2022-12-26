@@ -28,27 +28,6 @@ let foeHP = 64
 let userReduction = [1, 1]
 let foeReduction = [1,1]
 
-
-// starts everything
-overlay.addEventListener('mouseup', ()=> {
-    audioBattle.play()
-    audioBattle.volume = 0.2
-    overlay.classList.remove('overlay')
-    setInterval(songEnd, 100)
-})
-
-function songEnd() {
-    if(audioBattle.currentTime > 81.5) {
-        audioBattle.currentTime = 2.95
-    }
-}
-
-// battle theme
-battleButton.addEventListener('mouseup', () => {
-    audioBattle.muted = true
-})
-
-
 const dialogueList = 
     ["What will USER do?",
     "You don't have any more Pokemon to use!",
@@ -75,9 +54,33 @@ let ppBR= ppBRcap
 let userMoves = '' 
 let computerMoves = '' 
 
-document.addEventListener('keyup',moveMenu)
-document.addEventListener('keyup',pressingAB)
-menuTL.classList.add(select)
+// starts everything
+overlay.addEventListener('mouseup', ()=> {
+    audioBattle.play()
+    audioBattle.volume = 0.2
+    overlay.classList.remove('overlay')
+    setInterval(songEnd, 100)
+    document.addEventListener('keyup',moveMenu)
+    document.addEventListener('keyup',pressingAB)
+    menuTL.classList.add(select)
+    returnToState('main')
+})
+
+function songEnd() {
+    if(audioBattle.currentTime > 81.5) {
+        audioBattle.currentTime = 2.95
+    }
+}
+
+// battle theme
+battleButton.addEventListener('mouseup', () => {
+    if (audioBattle.muted == false){
+        audioBattle.muted = true
+    }
+    else {
+        audioBattle.muted = false
+    }
+})
 
 function moveMenu(e) {
     if (menuState != 0){
@@ -376,7 +379,7 @@ function fightSequence() {
     }
 
     // return to normal
-    if (foeHP > 0 || userHP > 0) {
+    if (foeHP > 0 && userHP > 0) {
         setTimeout(() => {
             returnToState('main') 
             menuDialogue() 
@@ -400,6 +403,12 @@ function inflictDamage(hp, green, black, multiplier) {
     if (newhp < 0) {
         newhp = 0
     }
+    else if (newhp <= 16) {
+        green.style.backgroundColor = '#b82116'
+    }
+    else if (newhp <= 32) {
+        green.style.backgroundColor = '#ffdc17'
+    }
     green.style.flex = newhp.toString()
     black.style.flex = (64-newhp).toString()
 }
@@ -417,6 +426,7 @@ function returnToState(option) {
         if (!ppBox.classList.contains('hidden')) { ppBox.classList.add('hidden') }
         if (menuBox.classList.contains('hidden')) { menuBox.classList.remove('hidden')}
         emptyBox.classList.remove("hidden")
+        userSprite.classList.add('bobbing')
         menuBox.style.flex = "4"
         menuTL.innerHTML = 'FIGHT'
         menuTR.innerHTML = 'BAG'
@@ -438,6 +448,7 @@ function returnToState(option) {
     else if (option == 'attack'){
         ppBox.classList.add('hidden')
         menuBox.classList.add("hidden")
+        userSprite.classList.remove('bobbing')
         menuState = 3 // attack sequence
     }
 }
