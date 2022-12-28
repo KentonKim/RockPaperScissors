@@ -1,18 +1,8 @@
-JS tasks
-- trigger end music
-- end phase
+rock animation
+sicssor animation
+paper animation
+charge animation
 
+hurt animation
 
-aesthetics
-- hp gradient
-- exp bar
-
-
-
-Animation tasks
-- battle start animation
-	- grasses move around
-	- pokemon slide in
-	- pokemon change sprites and make noise
-- attack animation
-- fainted animation
+timing

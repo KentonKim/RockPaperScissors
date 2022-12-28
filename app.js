@@ -28,8 +28,8 @@ const audioPaper = document.querySelector('#audio-paper')
 const overlay = document.querySelector('.overlay')
 
 let menuState = 1
-let userHP = 64 
-let foeHP = 64 
+let userHP = 4 
+let foeHP = 4 
 let userReduction = [1, 1]
 let foeReduction = [1,1]
 
@@ -101,11 +101,13 @@ function songEnd() {
 
 // battle theme
 battleButton.addEventListener('mouseup', () => {
-    if (audioBattle.muted == false){
+    if (audioBattle.muted == false || audioVictory.muted == false){
         audioBattle.muted = true
+        audioVictory.muted = true
     }
     else {
         audioBattle.muted = false
+        audioVictory.muted = false 
     }
 })
 
@@ -323,71 +325,63 @@ function fightSequence() {
     else if ((userMoves == moveList[0] && computerMoves == moveList[1]) 
     || (userMoves == moveList[1] && computerMoves == moveList[2]) 
     || (userMoves == moveList[2] && computerMoves == moveList[0])) {
+
+        foeHP -= foeReduction[0]*damage
+
+
+        // animation stuff
         textBox.innerHTML = "USER used " + userMoves + '!'
+        setTimeout(() => { inflictDamage(foeHpBox,foeHP, foeHpGreen, foeHpBlack) }, 1000)
         setTimeout(() => {
-            inflictDamage(foeHpBox,foeHP, foeHpGreen, foeHpBlack, foeReduction) 
-            foeHP -= foeReduction[0]*damage
-        }, 1000)
-        if (foeHP <= 0){
-            setTimeout(() => {
+            if (foeHP <= 0){
                     triggerEnd()
-            }, 2500)
-        }
-        else {
-            setTimeout(() => {
+            }
+            else {
                 textBox.innerHTML = "FOE used " + computerMoves + '!'
-            }, 2500);
-            setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
-        }
+                setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
+            }
+        }, 2500)
     }
     // Computer wins
     else if ((userMoves == moveList[2] && computerMoves == moveList[1]) 
     || (userMoves == moveList[0] && computerMoves == moveList[2]) 
     || (userMoves == moveList[1] && computerMoves == moveList[0])) {
+
+        userHP -= userReduction[0]*damage
         textBox.innerHTML = "USER used " + userMoves + '!'
+
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
-        setTimeout(() => {
-            inflictDamage(userHpBox, userHP, userHpGreen, userHpBlack, userReduction) 
-            userHP -= userReduction[0]*damage
-        }, 3500)
-        setTimeout(() => {
-            triggerEnd()
-        }, 5000);
+        setTimeout(() => {inflictDamage(userHpBox, userHP, userHpGreen, userHpBlack) }, 3500)
+        setTimeout(() => {triggerEnd()}, 5000);
     }
 
     // Computer charges
     else if (userMoves != moveList[3] && computerMoves == moveList[3]) {
+        // reduce stats
+        foeReduction[0] *= 0.5
+        userReduction[1] *= 2
+        foeHP -= foeReduction[0]*damage
+
         textBox.innerHTML = "FOE used " + computerMoves + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
         setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, 2500)
-        setTimeout(() => {
-            // reduce stats
-            foeReduction[0] *= 0.5
-            userReduction[1] *= 2
-            inflictDamage(foeHpBox, foeHP, foeHpGreen, foeHpBlack, foeReduction) 
-            foeHP -= foeReduction[0]*damage
-        }, 3500)
-        setTimeout(() => {
-            triggerEnd()
-        }, 5000);
+        setTimeout(() => {inflictDamage(foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, 3500)
+        setTimeout(() => {triggerEnd()}, 5000);
     }
 
     // User charges
     else if (userMoves == moveList[3] && computerMoves != moveList[3]) {
+        // reduce stats
+        userReduction[0] *= 0.5
+        foeReduction[1] *= 2
+        userHP -= userReduction[0]*damage
+
         textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
-        setTimeout(() => {
-            // reduce stats
-            userReduction[0] *= 0.5
-            foeReduction[1] *= 2
-            inflictDamage(userHpBox, userHP, userHpGreen, userHpBlack, userReduction) 
-            userHP -= userReduction[0]*damage
-        }, 3500)
-        setTimeout(() => {
-            triggerEnd()
-        }, 5000);
+        setTimeout(() => {inflictDamage(userHpBox, userHP, userHpGreen, userHpBlack) }, 3500)
+        setTimeout(() => {triggerEnd()}, 5000);
     }
 
     // Both charges
@@ -411,30 +405,25 @@ function fightSequence() {
     }
 
     // update reduction arrays 
-    setTimeout(() => {
-        console.log(userReduction)
-        console.log(foeReduction)
-        userReduction = userReduction.slice(1)
-        foeReduction = foeReduction.slice(1)
-        userReduction.push(1)
-        foeReduction.push(1)
-    }, 6000);
+    userReduction = userReduction.slice(1)
+    foeReduction = foeReduction.slice(1)
+    userReduction.push(1)
+    foeReduction.push(1)
 
 }
 
-function inflictDamage(box, hp, green, black, multiplier) {
-    let newhp = (hp-(damage*multiplier[0]))
-    if (newhp < 0) {
-        newhp = 0
+function inflictDamage(box, hp, green, black) {
+    if (hp < 0) {
+        hp = 0
     }
-    else if (newhp <= 16) {
+    else if (hp <= 16) {
         green.style.backgroundColor = '#b82116'
     }
-    else if (newhp <= 32) {
+    else if (hp <= 32) {
         green.style.backgroundColor = '#ffdc17'
     }
-    green.style.flex = newhp.toString()
-    black.style.flex = (64-newhp).toString()
+    green.style.flex = hp.toString()
+    black.style.flex = (64-hp).toString()
 
     box.animate(hpBoxHurt,hpBoxHurtTiming)
 }
@@ -481,10 +470,14 @@ function returnToState(option) {
 
 function triggerEnd() {
     if (userHP <=0) {
+        userSprite.classList.add('fainted')
+
         textBox.innerHTML = "USER has fainted!" 
         textBox.innerHTML = "USER whited out!" 
     }
     else if (foeHP <=0) {
+        foeSprite.classList.add('fainted')
+        
         textBox.innerHTML = "FOE has fainted!" 
         textBox.innerHTML = "You won!" 
 
