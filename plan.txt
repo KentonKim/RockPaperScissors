@@ -3,6 +3,8 @@ sicssor animation
 paper animation
 charge animation
 
-hurt animation
+exp?
+
+hp bar look better
 
 timing

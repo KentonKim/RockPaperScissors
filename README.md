@@ -9,3 +9,5 @@ Audio files from https://www.sounds-resource.com/game_boy_advance/pokemonrubysap
 Status Effects Ripped by LDEJRuff
 
 Battle Effects Ripped by Neslug
+
+Pokemon cries from https://play.pokemonshowdown.com/audio/cries/
