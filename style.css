@@ -226,6 +226,37 @@ body {
     left: 530px;
 }
 
+/* Moves */
+.move {
+    position: absolute;
+}
+
+#paper {
+    top: 200px;
+    left: 600px;
+    scale: 2;
+}
+
+#rock {
+    scale: 4;
+    left: 640px;
+}
+
+.scissor {
+    scale: 2.5;
+    top:200px;
+    left: 640px;
+}
+
+#scissor4 {
+    top:195px;
+}
+
+#scissor5 {
+    left: 642px;
+    top:201px;
+}
+
 /* Active Items */
 
 .select {

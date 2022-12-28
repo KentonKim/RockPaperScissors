@@ -28,6 +28,11 @@ const audioHurt = document.querySelector('#audio-hurt')
 const audioZig = document.querySelector('#audio-zigzagoon')
 const audioBidoof = document.querySelector('#audio-bidoof')
 
+const spritePaper = document.querySelector('#paper')
+const spriteRock = document.querySelector('#rock')
+const spriteScissorArr = document.querySelectorAll('.scissor') // inverted order
+
+
 const overlay = document.querySelector('.overlay')
 
 let menuState = 1
@@ -94,6 +99,38 @@ const hurtAnimTiming = {
     iterations: 4,
 }
 
+const movePaper = [
+    {offset: 0, opacity: '100'},
+    {offset: 0.02, opacity: '100', transform: 'scale(0.9)'},
+    {offset: 0.3, opacity: '100', transform: 'scale(0.9)'},
+    {offset: 0.31, opacity: '0', transform:'scale(0.9)'},
+    {offset: 0.32, opacity: '0', transform: 'translateX(30px)'},
+    {offset: 0.33, opacity: '100', transform: 'translateX(30px)'},
+    {offset: 0.35, opacity: '100', transform: 'translateX(30px) scale(0.9)'},
+    {offset: 0.63, opacity: '100', transform: 'translateX(30px) scale(0.9)'},
+    {offset: 0.64, opacity: '0', transform: 'translateX(30px) scale(0.9)'},
+    {offset: 0.65, opacity: '0', transform: 'translateY(-20px) translateX(15px)'},
+    {offset: 0.66, opacity: '100', transform: 'translateY(-20px) translateX(15px)'},
+    {offset: 0.68, opacity: '100', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
+    {offset: 0.96, opacity: '100', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
+    {offset: 1, opacity: '0', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
+]
+
+const movePaperTiming = {
+    duration: 1000,
+    iterations: 1,
+}
+
+const moveRock = [
+    {offset: 0, transform: 'translateY(0px)'},
+    {offset: 0.05, transform: 'translateY(35px)'},
+    {transform: 'translateY(35px)'}
+]
+
+const moveRockTiming = {
+    duration: 800
+}
+
 // starts everything
 overlay.addEventListener('mouseup', ()=> {
     audioBattle.play()
@@ -122,6 +159,7 @@ battleButton.addEventListener('mouseup', () => {
         audioBattle.muted = false
         audioVictory.muted = false 
     }
+    animateScissor()
 })
 
 function moveMenu(e) {
@@ -513,5 +551,52 @@ function triggerEnd() {
     // plays death sound
     // gives animation of death to sprite
 
+
+}
+
+function animatePaper() {
+    spritePaper.classList.remove('hidden')
+    spritePaper.animate(movePaper, movePaperTiming)
+    audioPaper.play()
+    audioPaper.loop = true
+    audioPaper.playbackRate = 1.5
+    setTimeout(() => {
+        spritePaper.classList.add('hidden')
+        audioPaper.loop = false 
+    }, 950);
+}
+
+function animateRock() {
+    spriteRock.classList.remove('hidden')
+    spriteRock.animate(moveRock, moveRockTiming)
+    audioRock.play()
+    setTimeout(() => {
+        spriteRock.classList.add('hidden')
+    }, 750);
+}
+
+function animateScissor() {
+    audioScissor.play()
+    spriteScissorArr[4].classList.remove('hidden')
+
+    setTimeout(() => {
+        spriteScissorArr[4].classList.add('hidden')
+        spriteScissorArr[3].classList.remove('hidden')
+    }, 70);
+    setTimeout(() => {
+        spriteScissorArr[3].classList.add('hidden')
+        spriteScissorArr[2].classList.remove('hidden')
+    }, 130);
+    setTimeout(() => {
+        spriteScissorArr[2].classList.add('hidden')
+        spriteScissorArr[1].classList.remove('hidden')
+    }, 190);
+    setTimeout(() => {
+        spriteScissorArr[1].classList.add('hidden')
+        spriteScissorArr[0].classList.remove('hidden')
+    }, 250);
+    setTimeout(() => {
+        spriteScissorArr[0].classList.add('hidden')
+    }, 600);
 
 }
