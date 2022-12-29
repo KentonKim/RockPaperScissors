@@ -1,10 +1,4 @@
-rock animation
-sicssor animation
-paper animation
-charge animation
-
 exp?
-
 hp bar look better
 
-timing
+moves after charging coincide with inflict damage animation
