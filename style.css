@@ -257,6 +257,18 @@ body {
     top:201px;
 }
 
+.charge {
+    scale: 9;
+    top: 140px;
+    left: 630px;
+    opacity: 0.9;
+}
+
+#charge1 {
+    top:145px;
+    left: 640px;
+}
+
 /* Active Items */
 
 .select {

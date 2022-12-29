@@ -24,6 +24,7 @@ const audioVictory = document.querySelector('#audio-victory')
 const audioRock = document.querySelector('#audio-rock')
 const audioScissor = document.querySelector('#audio-scissor')
 const audioPaper = document.querySelector('#audio-paper')
+const audioCharge = document.querySelector('#audio-charge')
 const audioHurt = document.querySelector('#audio-hurt')
 const audioZig = document.querySelector('#audio-zigzagoon')
 const audioBidoof = document.querySelector('#audio-bidoof')
@@ -31,7 +32,7 @@ const audioBidoof = document.querySelector('#audio-bidoof')
 const spritePaper = document.querySelector('#paper')
 const spriteRock = document.querySelector('#rock')
 const spriteScissorArr = document.querySelectorAll('.scissor') // inverted order
-
+const spriteChargeArr = document.querySelectorAll('.charge') // correct order
 
 const overlay = document.querySelector('.overlay')
 
@@ -159,11 +160,11 @@ battleButton.addEventListener('mouseup', () => {
         audioBattle.muted = false
         audioVictory.muted = false 
     }
-    animateScissor()
 })
 
 function moveMenu(e) {
     if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
+        animateCharge()
         if (menuState != 0){
             switch(e.key) {
                 case 'w' : // up 
@@ -598,5 +599,28 @@ function animateScissor() {
     setTimeout(() => {
         spriteScissorArr[0].classList.add('hidden')
     }, 600);
+}
+
+function animateCharge() {
+    audioCharge.play()
+    spriteChargeArr[0].classList.remove('hidden')
+
+    for (let i = 100; i < 1000; i += 200) {
+        setTimeout(() => {
+            spriteChargeArr[0].classList.add('hidden')
+            spriteChargeArr[1].classList.remove('hidden')
+        }, i);
+        setTimeout(() => {
+            spriteChargeArr[1].classList.add('hidden')
+            spriteChargeArr[0].classList.remove('hidden')
+        }, i+100);
+    }
+    setTimeout(() => {
+        spriteChargeArr[0].classList.add('hidden')
+        spriteChargeArr[2].classList.remove('hidden')
+    }, 1100);
+    setTimeout(() => {
+        spriteChargeArr[2].classList.add('hidden')
+    }, 1200);
 
 }

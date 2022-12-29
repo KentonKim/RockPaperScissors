@@ -12,6 +12,7 @@
     <audio id="audio-rock" src="audio/rock.wav"></audio>
     <audio id="audio-scissor" src="audio/scissor.wav"></audio>
     <audio id="audio-paper" src="audio/paper.wav"></audio>
+    <audio id="audio-charge" src="audio/charge.wav"></audio>
     <audio id="audio-hurt" src="audio/hurt.wav"></audio>
     <audio id="audio-bidoof" src="audio/bidoof.mp3"></audio>
     <audio id="audio-zigzagoon" src="audio/zigzagoon.mp3"></audio>
@@ -22,9 +23,14 @@
 <body>
 
     <div class="screen">
+        <!-- Attacks -->
+        <img src="sprites/charge1.png" alt="charge attack1" id="charge1" class="hidden charge move">
+        <img src="sprites/charge2.png" alt="charge attack2" id="charge2" class="hidden charge move">
+        <img src="sprites/charge3.png" alt="charge attack3" id="charge3" class="hidden charge move">
+
         <!-- Pokemon -->
-        <img id="user-sprite" class="sprite" src="sprites/zigzagoon.png" alt="zigzagoon">
-        <img id="foe-sprite" class="sprite" src="sprites/bidoof.png" alt="bidoof">
+        <img id="user-sprite" class="sprite" src="https://img.pokemondb.net/sprites/diamond-pearl/back-normal/zigzagoon.png" alt="Zigzagoon">
+        <img id="foe-sprite" class="sprite" src="https://img.pokemondb.net/sprites/diamond-pearl/normal/bidoof-f.png" alt="Bidoof">
         <img id="arena-overlay" src="sprites/overlay.png" alt="arena overlay">
 
         <!-- Attacks -->
@@ -35,7 +41,6 @@
         <img src="sprites/sci3.png" alt="scissor attack3" id="scissor3" class="hidden scissor move">
         <img src="sprites/sci2.png" alt="scissor attack2" id="scissor2" class="hidden scissor move">
         <img src="sprites/sci1.png" alt="scissor attack1" id="scissor1" class="hidden scissor move">
-        <img src="sprites/charge.png" alt="charge attack" id="charge" class="move">
 
         <!-- HP Boxes -->
         <div id="foe-outer" class="hp-outer">
