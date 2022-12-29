@@ -237,15 +237,42 @@ body {
     scale: 2;
 }
 
+#paper-alt {
+    top: 350px;
+    left: 180px;
+    scale: 3;
+}
+
 #rock {
     scale: 4;
     left: 640px;
+}
+
+#rock-alt {
+    scale:5.5;
+    left:220px;
+    top: 70px;
 }
 
 .scissor {
     scale: 2.5;
     top:200px;
     left: 640px;
+}
+
+.scissor-alt {
+    scale: 4;
+    top:340px;
+    left: 200px;
+}
+
+#scissor4-alt {
+    top: 335px;
+}
+
+#scissor5-alt {
+    left: 205px;
+    top: 345px;
 }
 
 #scissor4 {
@@ -267,6 +294,16 @@ body {
 #charge1 {
     top:145px;
     left: 640px;
+}
+
+.charge-alt {
+    scale: 12;
+    top: 270px;
+    left: 200px;
+}
+
+#charge1-alt {
+    left: 210px;
 }
 
 /* Active Items */

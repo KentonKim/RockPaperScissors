@@ -30,15 +30,20 @@ const audioZig = document.querySelector('#audio-zigzagoon')
 const audioBidoof = document.querySelector('#audio-bidoof')
 
 const spritePaper = document.querySelector('#paper')
+const spritePaperAlt = document.querySelector('#paper-alt')
 const spriteRock = document.querySelector('#rock')
+const spriteRockAlt = document.querySelector('#rock-alt')
 const spriteScissorArr = document.querySelectorAll('.scissor') // inverted order
+const spriteScissorAltArr = document.querySelectorAll('.scissor-alt')
 const spriteChargeArr = document.querySelectorAll('.charge') // correct order
+const spriteChargeAltArr = document.querySelectorAll('.charge-alt') // correct order
 
 const overlay = document.querySelector('.overlay')
 
 let menuState = 1
 let userHP = 64 
 let foeHP = 64 
+let delay = 0
 let userReduction = [1, 1]
 let foeReduction = [1,1]
 
@@ -100,37 +105,9 @@ const hurtAnimTiming = {
     iterations: 4,
 }
 
-const movePaper = [
-    {offset: 0, opacity: '100'},
-    {offset: 0.02, opacity: '100', transform: 'scale(0.9)'},
-    {offset: 0.3, opacity: '100', transform: 'scale(0.9)'},
-    {offset: 0.31, opacity: '0', transform:'scale(0.9)'},
-    {offset: 0.32, opacity: '0', transform: 'translateX(30px)'},
-    {offset: 0.33, opacity: '100', transform: 'translateX(30px)'},
-    {offset: 0.35, opacity: '100', transform: 'translateX(30px) scale(0.9)'},
-    {offset: 0.63, opacity: '100', transform: 'translateX(30px) scale(0.9)'},
-    {offset: 0.64, opacity: '0', transform: 'translateX(30px) scale(0.9)'},
-    {offset: 0.65, opacity: '0', transform: 'translateY(-20px) translateX(15px)'},
-    {offset: 0.66, opacity: '100', transform: 'translateY(-20px) translateX(15px)'},
-    {offset: 0.68, opacity: '100', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
-    {offset: 0.96, opacity: '100', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
-    {offset: 1, opacity: '0', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
-]
 
-const movePaperTiming = {
-    duration: 1000,
-    iterations: 1,
-}
 
-const moveRock = [
-    {offset: 0, transform: 'translateY(0px)'},
-    {offset: 0.05, transform: 'translateY(35px)'},
-    {transform: 'translateY(35px)'}
-]
 
-const moveRockTiming = {
-    duration: 800
-}
 
 // starts everything
 overlay.addEventListener('mouseup', ()=> {
@@ -164,7 +141,6 @@ battleButton.addEventListener('mouseup', () => {
 
 function moveMenu(e) {
     if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
-        animateCharge()
         if (menuState != 0){
             switch(e.key) {
                 case 'w' : // up 
@@ -366,13 +342,17 @@ function storeAttack() {
 }
 
 function fightSequence() {
+
+    delay = 0 // animation of attack
+
     // tie
     if (userMoves == computerMoves && userMoves != moveList[3]) {
         textBox.innerHTML = "USER used " + userMoves + '!'
-        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 1500)
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
-        setTimeout(() => { textBox.innerHTML = "But it failed!" }, 4000)
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
     }
+
     // User wins
     else if ((userMoves == moveList[0] && computerMoves == moveList[1]) 
     || (userMoves == moveList[1] && computerMoves == moveList[2]) 
@@ -381,20 +361,19 @@ function fightSequence() {
         foeHP -= foeReduction[0]*damage
 
         textBox.innerHTML = "USER used " + userMoves + '!'
-        setTimeout(() => { 
-            inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack)
-        }, 1000)
-
+        setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
+        setTimeout(() => {inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, delay + 1000)
         setTimeout(() => {
             if (foeHP <= 0){
-                    triggerEnd()
+                triggerEnd()
             }
             else {
                 textBox.innerHTML = "FOE used " + computerMoves + '!'
                 setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
             }
-        }, 2500)
+        }, delay + 3000)
     }
+
     // Computer wins
     else if ((userMoves == moveList[2] && computerMoves == moveList[1]) 
     || (userMoves == moveList[0] && computerMoves == moveList[2]) 
@@ -403,56 +382,59 @@ function fightSequence() {
         userHP -= userReduction[0]*damage
         textBox.innerHTML = "USER used " + userMoves + '!'
 
-        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
-        setTimeout(() => {
-            inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) 
-        }, 3500)
-        setTimeout(() => {triggerEnd()}, 5000);
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2000)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, 3000)
+        setTimeout(() => {inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) }, delay + 3000)
+        setTimeout(() => {triggerEnd()}, delay + 4000);
     }
 
     // Computer charges
     else if (userMoves != moveList[3] && computerMoves == moveList[3]) {
-        // reduce stats
         foeReduction[0] *= 0.5
         userReduction[1] *= 2
         foeHP -= foeReduction[0]*damage
 
         textBox.innerHTML = "FOE used " + computerMoves + '!'
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, 2500)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, 1000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1000)
+        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, delay + 2000)
+        setTimeout(() => {attackAnimate(userMoves, 0) }, delay + 3000)
         setTimeout(() => {
             inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) 
-        }, 3500)
-        setTimeout(() => {triggerEnd()}, 5000);
+        }, delay + 4000)
+        setTimeout(() => {triggerEnd()}, delay + 5000);
     }
 
     // User charges
     else if (userMoves == moveList[3] && computerMoves != moveList[3]) {
-        // reduce stats
         userReduction[0] *= 0.5
         foeReduction[1] *= 2
         userHP -= userReduction[0]*damage
 
         textBox.innerHTML = "USER used " + userMoves + '!'
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
+        setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 2000)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3000)
         setTimeout(() => {
+            console.log(delay)
             inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) 
-        }, 3500)
-        setTimeout(() => {triggerEnd()}, 5000);
+        }, delay + 4000)
+        setTimeout(() => {triggerEnd()}, delay + 5000);
     }
 
     // Both charges
     else if (userMoves == computerMoves && userMoves == moveList[3]) {
-        // reduce stats
         userReduction[1] *= 2
         foeReduction[1] *= 2
 
         textBox.innerHTML = "USER used " + userMoves + '!'
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, 3500)
+        setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1000)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 2000)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3000)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 4000)
     }
 
     // return to normal
@@ -460,7 +442,7 @@ function fightSequence() {
         setTimeout(() => {
             returnToState('main') 
             menuDialogue() 
-        }, 5000);
+        }, delay + 5000);
     }
 
     // update reduction arrays 
@@ -531,6 +513,8 @@ function returnToState(option) {
 
 function triggerEnd() {
     if (userHP <=0) {
+        audioZig.webkitPreservesPitch = false;
+        audioZig.playbackRate = 0.8
         audioZig.play()
         userSprite.classList.add('fainted')
 
@@ -538,6 +522,8 @@ function triggerEnd() {
         textBox.innerHTML = "USER whited out!" 
     }
     else if (foeHP <=0) {
+        audioBidoof.webkitPreservesPitch = false;
+        audioBidoof.playbackRate = 0.8
         audioBidoof.play()
         foeSprite.classList.add('fainted')
         
@@ -555,72 +541,154 @@ function triggerEnd() {
 
 }
 
-function animatePaper() {
-    spritePaper.classList.remove('hidden')
-    spritePaper.animate(movePaper, movePaperTiming)
+function attackAnimate(moves, num) {
+    switch(moves) {
+        case moveList[0]: // rock 
+            animateRock(num)
+            break
+        case moveList[1]: // scissor
+            animateScissor(num)
+            break
+        case moveList[2]: // paper
+            animatePaper(num)
+            break
+        case moveList[3]: // charge
+            animateCharge(num)
+            break
+    }
+}
+
+function animatePaper(num) {
+    let attack
+    if (num == 0) { // user is casting
+        attack = spritePaper
+
+    }
+    else if (num == 1) { // foe is casting 
+        attack = spritePaperAlt
+
+    }
+
+    attack.classList.remove('hidden')
+    attack.animate([
+        {offset: 0, opacity: '100'},
+        {offset: 0.02, opacity: '100', transform: 'scale(0.9)'},
+        {offset: 0.3, opacity: '100', transform: 'scale(0.9)'},
+        {offset: 0.31, opacity: '0', transform:'scale(0.9)'},
+        {offset: 0.32, opacity: '0', transform: 'translateX(30px)'},
+        {offset: 0.33, opacity: '100', transform: 'translateX(30px)'},
+        {offset: 0.35, opacity: '100', transform: 'translateX(30px) scale(0.9)'},
+        {offset: 0.63, opacity: '100', transform: 'translateX(30px) scale(0.9)'},
+        {offset: 0.64, opacity: '0', transform: 'translateX(30px) scale(0.9)'},
+        {offset: 0.65, opacity: '0', transform: 'translateY(-20px) translateX(15px)'},
+        {offset: 0.66, opacity: '100', transform: 'translateY(-20px) translateX(15px)'},
+        {offset: 0.68, opacity: '100', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
+        {offset: 0.96, opacity: '100', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
+        {offset: 1, opacity: '0', transform: 'translateY(-20px) translateX(15px) scale(0.9)'},
+    ], {
+        duration: 1000,
+        iterations: 1,
+    })
     audioPaper.play()
     audioPaper.loop = true
     audioPaper.playbackRate = 1.5
     setTimeout(() => {
-        spritePaper.classList.add('hidden')
+        attack.classList.add('hidden')
         audioPaper.loop = false 
     }, 950);
+    delay += 1000 // ms
 }
 
-function animateRock() {
-    spriteRock.classList.remove('hidden')
-    spriteRock.animate(moveRock, moveRockTiming)
+function animateRock(num) {
+    let attack
+    if (num == 0) { // user is casting
+        attack = spriteRock
+
+    }
+    else if (num == 1) { // foe is casting 
+        attack = spriteRockAlt
+
+    }
+
+    attack.classList.remove('hidden')
+    attack.animate([
+        {offset: 0, transform: 'translateY(0px)'},
+        {offset: 0.05, transform: 'translateY(35px)'},
+        {transform: 'translateY(35px)'}
+    ], {
+        duration: 800
+    })
     audioRock.play()
     setTimeout(() => {
-        spriteRock.classList.add('hidden')
+        attack.classList.add('hidden')
     }, 750);
+
+    delay += 800 //ms
 }
 
-function animateScissor() {
+function animateScissor(num) {
+    let attackArr
+    if (num == 0) { // user is casting
+        attackArr = spriteScissorArr 
+    }
+    else if (num == 1) { // foe is casting 
+        attackArr = spriteScissorAltArr 
+    }
+
     audioScissor.play()
-    spriteScissorArr[4].classList.remove('hidden')
+    attackArr[4].classList.remove('hidden')
 
     setTimeout(() => {
-        spriteScissorArr[4].classList.add('hidden')
-        spriteScissorArr[3].classList.remove('hidden')
+        attackArr[4].classList.add('hidden')
+        attackArr[3].classList.remove('hidden')
     }, 70);
     setTimeout(() => {
-        spriteScissorArr[3].classList.add('hidden')
-        spriteScissorArr[2].classList.remove('hidden')
+        attackArr[3].classList.add('hidden')
+        attackArr[2].classList.remove('hidden')
     }, 130);
     setTimeout(() => {
-        spriteScissorArr[2].classList.add('hidden')
-        spriteScissorArr[1].classList.remove('hidden')
+        attackArr[2].classList.add('hidden')
+        attackArr[1].classList.remove('hidden')
     }, 190);
     setTimeout(() => {
-        spriteScissorArr[1].classList.add('hidden')
-        spriteScissorArr[0].classList.remove('hidden')
+        attackArr[1].classList.add('hidden')
+        attackArr[0].classList.remove('hidden')
     }, 250);
     setTimeout(() => {
-        spriteScissorArr[0].classList.add('hidden')
+        attackArr[0].classList.add('hidden')
     }, 600);
+    delay += 600 // ms
 }
 
-function animateCharge() {
+function animateCharge(num) {
+    let attackArr
+    if (num == 0) { // user is casting
+        attackArr = spriteChargeAltArr
+    }
+    else if (num == 1) { // foe is casting 
+        attackArr = spriteChargeArr
+    }
+
     audioCharge.play()
-    spriteChargeArr[0].classList.remove('hidden')
+    attackArr[0].classList.remove('hidden')
 
     for (let i = 100; i < 1000; i += 200) {
         setTimeout(() => {
-            spriteChargeArr[0].classList.add('hidden')
-            spriteChargeArr[1].classList.remove('hidden')
+            attackArr[0].classList.add('hidden')
+            attackArr[1].classList.remove('hidden')
         }, i);
         setTimeout(() => {
-            spriteChargeArr[1].classList.add('hidden')
-            spriteChargeArr[0].classList.remove('hidden')
+            attackArr[1].classList.add('hidden')
+            attackArr[0].classList.remove('hidden')
         }, i+100);
     }
     setTimeout(() => {
-        spriteChargeArr[0].classList.add('hidden')
-        spriteChargeArr[2].classList.remove('hidden')
+        attackArr[0].classList.add('hidden')
+        attackArr[2].classList.remove('hidden')
     }, 1100);
     setTimeout(() => {
-        spriteChargeArr[2].classList.add('hidden')
+        attackArr[2].classList.add('hidden')
     }, 1200);
 
+    delay += 1200 // ms
 }
