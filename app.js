@@ -344,6 +344,7 @@ function storeAttack() {
 function fightSequence() {
 
     delay = 0 // animation of attack
+    let totdelay
 
     // tie
     if (userMoves == computerMoves && userMoves != moveList[3]) {
@@ -351,6 +352,7 @@ function fightSequence() {
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
         setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 4000)
+        totdelay = 4000 
     }
 
     // User wins
@@ -359,19 +361,21 @@ function fightSequence() {
     || (userMoves == moveList[2] && computerMoves == moveList[0])) {
 
         foeHP -= foeReduction[0]*damage
+        setDelay(userMoves)
 
         textBox.innerHTML = "USER used " + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
-        setTimeout(() => {inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, delay + 1000)
+        setTimeout(() => {inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, delay + 1800)
         setTimeout(() => {
             if (foeHP <= 0){
                 triggerEnd()
             }
             else {
                 textBox.innerHTML = "FOE used " + computerMoves + '!'
-                setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
+                setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
             }
         }, delay + 3000)
+        totdelay = delay + 3000 
     }
 
     // Computer wins
@@ -380,13 +384,17 @@ function fightSequence() {
     || (userMoves == moveList[1] && computerMoves == moveList[0])) {
 
         userHP -= userReduction[0]*damage
+        setDelay(computerMoves)
         textBox.innerHTML = "USER used " + userMoves + '!'
 
-        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2000)
-        setTimeout(() => {attackAnimate(computerMoves, 1) }, 3000)
-        setTimeout(() => {inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) }, delay + 3000)
-        setTimeout(() => {triggerEnd()}, delay + 4000);
+        setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1500)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2500)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, 3500)
+        setTimeout(() => {
+            console.log(delay)
+            inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) }, delay + 3800)
+        setTimeout(() => {triggerEnd()}, delay + 5000);
+        totdelay = delay + 5000
     }
 
     // Computer charges
@@ -394,16 +402,17 @@ function fightSequence() {
         foeReduction[0] *= 0.5
         userReduction[1] *= 2
         foeHP -= foeReduction[0]*damage
+        setDelay(computerMoves)
 
         textBox.innerHTML = "FOE used " + computerMoves + '!'
-        setTimeout(() => {attackAnimate(computerMoves, 1) }, 1000)
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1000)
-        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, delay + 2000)
-        setTimeout(() => {attackAnimate(userMoves, 0) }, delay + 3000)
-        setTimeout(() => {
-            inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) 
-        }, delay + 4000)
-        setTimeout(() => {triggerEnd()}, delay + 5000);
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, 1500)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1800)
+        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, delay + 3300)
+        setTimeout(() => {attackAnimate(userMoves, 0) }, delay + 4800)
+        setDelay(userMoves)
+        setTimeout(() => {inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, delay + 5100)
+        setTimeout(() => {triggerEnd()}, delay + 6300);
+        totdelay = delay + 6300 
     }
 
     // User charges
@@ -411,30 +420,33 @@ function fightSequence() {
         userReduction[0] *= 0.5
         foeReduction[1] *= 2
         userHP -= userReduction[0]*damage
+        setDelay(userMoves)
 
         textBox.innerHTML = "USER used " + userMoves + '!'
-        setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 2000)
-        setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3000)
-        setTimeout(() => {
-            console.log(delay)
-            inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) 
-        }, delay + 4000)
-        setTimeout(() => {triggerEnd()}, delay + 5000);
+        setTimeout(() => {attackAnimate(userMoves, 0) }, 1500)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1800)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 3300)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 4800)
+        setDelay(computerMoves)
+        setTimeout(() => {inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) }, delay + 5100)
+        setTimeout(() => {triggerEnd()}, delay + 6300);
+        totdelay = delay + 6300 
     }
 
     // Both charges
     else if (userMoves == computerMoves && userMoves == moveList[3]) {
         userReduction[1] *= 2
         foeReduction[1] *= 2
+        setDelay(userMoves)
 
         textBox.innerHTML = "USER used " + userMoves + '!'
-        setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 2000)
-        setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3000)
-        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 4000)
+        setTimeout(() => {attackAnimate(userMoves, 0) }, 1500)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1800)
+        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 3300)
+        setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 4800)
+        setDelay(computerMoves)
+        setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 5100)
+        totdelay = delay + 5100 
     }
 
     // return to normal
@@ -442,7 +454,7 @@ function fightSequence() {
         setTimeout(() => {
             returnToState('main') 
             menuDialogue() 
-        }, delay + 5000);
+        }, totdelay + 200);
     }
 
     // update reduction arrays 
@@ -513,32 +525,29 @@ function returnToState(option) {
 
 function triggerEnd() {
     if (userHP <=0) {
-        audioZig.webkitPreservesPitch = false;
         audioZig.playbackRate = 0.8
         audioZig.play()
         userSprite.classList.add('fainted')
 
-        textBox.innerHTML = "USER has fainted!" 
-        textBox.innerHTML = "USER whited out!" 
+        setTimeout(() => {textBox.innerHTML = "USER has fainted!" }, 2000);
+        setTimeout(() => {textBox.innerHTML = "USER whited out!" }, 3500);
     }
     else if (foeHP <=0) {
-        audioBidoof.webkitPreservesPitch = false;
         audioBidoof.playbackRate = 0.8
         audioBidoof.play()
         foeSprite.classList.add('fainted')
         
-        textBox.innerHTML = "FOE has fainted!" 
-        textBox.innerHTML = "You won!" 
-
-        audioBattle.pause()
-        audioVictory.play()
-        audioVictory.volume = 0.2
-
+        setTimeout(() => {
+            audioBattle.pause()
+            audioVictory.play()
+            audioVictory.volume = 0.2
+            textBox.innerHTML = "FOE has fainted!" 
+           
+        }, 2000);
+        setTimeout(() => {
+            textBox.innerHTML = "You won!" 
+        }, 3500);
     }
-    // plays death sound
-    // gives animation of death to sprite
-
-
 }
 
 function attackAnimate(moves, num) {
@@ -596,7 +605,6 @@ function animatePaper(num) {
         attack.classList.add('hidden')
         audioPaper.loop = false 
     }, 950);
-    delay += 1000 // ms
 }
 
 function animateRock(num) {
@@ -622,8 +630,6 @@ function animateRock(num) {
     setTimeout(() => {
         attack.classList.add('hidden')
     }, 750);
-
-    delay += 800 //ms
 }
 
 function animateScissor(num) {
@@ -657,7 +663,6 @@ function animateScissor(num) {
     setTimeout(() => {
         attackArr[0].classList.add('hidden')
     }, 600);
-    delay += 600 // ms
 }
 
 function animateCharge(num) {
@@ -689,6 +694,21 @@ function animateCharge(num) {
     setTimeout(() => {
         attackArr[2].classList.add('hidden')
     }, 1200);
+}
 
-    delay += 1200 // ms
+function setDelay(moves) {
+    switch(moves) {
+        case moveList[0]: // rock 
+            delay += 800
+            break
+        case moveList[1]: // scissor
+            delay += 600
+            break
+        case moveList[2]: // paper
+            delay += 1000
+            break
+        case moveList[3]: // charge
+            delay += 1200
+            break
+    }
 }
