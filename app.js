@@ -142,7 +142,7 @@ battleButton.addEventListener('mouseup', () => {
 
 function moveMenu(e) {
     if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
-        if (menuState == 0 || menuState == 1){
+        if (menuState == 1 || menuState == 2){
             switch(e.key) {
                 case 'w' : // up 
                     if (menuBL.classList.contains(select)) {
@@ -203,7 +203,7 @@ function ppUpdate() {
             ppCount.innerHTML = "PP " + ppBL + "/" + ppBLcap
         }
         else if (menuOptions[2].classList.contains(select)) { // Paper
-            ppType.innerHTML = 'FIGHTING'
+            ppType.innerHTML = 'FIGHT'
             ppCount.innerHTML = "PP " + ppTR + "/" + ppTRcap
         }
         else if (menuOptions[3].classList.contains(select)) { // Charge

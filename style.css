@@ -8,6 +8,11 @@
     src: url(BigAppleNF.ttf);
 }
 
+@font-face {
+    font-family: minecraft;
+    src: url(minecraft.ttf) format('truetype');
+}
+
 * {
     box-sizing: border-box;
     font-family: 'pkfont';
@@ -250,6 +255,29 @@ body {
 .hp-black {
     background-color: #50635c;
     flex: 0;
+}
+
+#exp-container {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    padding: 0px 15px 0px 0px ;
+    color: #F3DFA3;
+    font-family: 'minecraft','bigapple';
+    font-size: 12px;
+}
+
+#exp-bar {
+    background: repeating-linear-gradient(
+    to right,
+    #f5da90,
+    #f5da90 5px,
+    #a37c0f 5px,
+    #a37c0f 10px
+    );
+    margin-left: 5px;
+    width: 78%;
+    height: 7px;
 }
 
 /* Pokemon */
