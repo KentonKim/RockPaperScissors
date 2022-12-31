@@ -199,6 +199,10 @@ body {
     top: 65px;
 }
 
+#foe-inner {
+    padding-bottom: 5px;
+}
+
 #user-outer {
     left: 515px;
     top: 290px;
@@ -214,7 +218,7 @@ body {
     border-radius: 10px;
     display: flex;
     flex-flow: column;
-    padding: 12px 5px 5px 15px;
+    padding: 12px 5px 0px 15px;
 }
 
 .hp-bot {
@@ -257,12 +261,21 @@ body {
     flex: 0;
 }
 
+#hp-number {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 18px;
+    padding-top: 5px;
+    padding-right: 10px;
+}
+
 #exp-container {
     display: flex;
     align-items: center;
     justify-content: right;
     padding: 0px 15px 0px 0px ;
-    color: #F3DFA3;
+    color: #F6FF27;
     font-family: 'minecraft','bigapple';
     font-size: 12px;
 }
@@ -278,6 +291,12 @@ body {
     margin-left: 5px;
     width: 78%;
     height: 7px;
+}
+
+#exp {
+    background-color: #00A8E6;
+    height: 100%;
+    width: 64%;
 }
 
 /* Pokemon */

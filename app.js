@@ -7,6 +7,7 @@ const ppCount = document.querySelector('#pp-count')
 const ppBox = document.querySelector("#pp-main")
 
 const userHpBox = document.querySelector('#user-outer')
+const userHpNum = document.querySelector('#hp-number')
 const userHpGreen = document.querySelector('#user-hp-green')
 const userHpBlack = document.querySelector('#user-hp-black')
 const userSprite = document.querySelector("#user-sprite")
@@ -394,6 +395,7 @@ function fightSequence() {
         setTimeout(() => {attackAnimate(computerMoves, 1) }, 3000)
         setTimeout(() => {
             inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack)
+            updateUserHP()
             triggerEnd()
         }, delay + 3250)
         delay += 420
@@ -435,6 +437,7 @@ function fightSequence() {
         setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3250)
         setDelay(computerMoves)
         setTimeout(() => {
+            updateUserHP()
             inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack) 
             triggerEnd()
         }, delay + 3500)
@@ -493,6 +496,12 @@ function inflictDamage(sprite, box, hp, green, black) {
         duration: 30,
         iterations: 3,
         })
+    }, 400);
+}
+
+function updateUserHP() {
+    setTimeout(() => {
+        userHpNum.innerHTML = userHP + "/ &nbsp 64"
     }, 400);
 }
 
