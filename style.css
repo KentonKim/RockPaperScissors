@@ -3,6 +3,11 @@
     src: url(pkfont.ttf);
 }
 
+@font-face {
+    font-family: bigapple;
+    src: url(BigAppleNF.ttf);
+}
+
 * {
     box-sizing: border-box;
     font-family: 'pkfont';
@@ -37,8 +42,8 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 36px;
-    opacity: 0.5;
+    font-size: 72px;
+    opacity: 0.8;
 }
 
 #arena-overlay{
@@ -78,9 +83,10 @@ body {
     padding-left: 30px;
     padding-top: 15px;
 
-    text-shadow: 2px 2px 4px #1f1b36;
     font-size: 48px;
+    text-shadow: 2px 2px 4px #1f1b36;
 }
+
 
 /* Menu */
 .menu-container {
@@ -153,12 +159,38 @@ body {
     border: 3px solid #50635c;
     background-color: #50635c;
     border-radius: 13px;
-    width: 30%;
+    width: 35%;
     position: absolute;
 }
 
+.hp-top {
+    display: flex;
+}
+
+.name {
+    font-size: 24px;
+}
+
+.level {
+    margin-left: auto;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.gender {
+    font-size: 20px;
+}
+
+#user-gender {
+    color: #ff5d52;
+}
+
+#foe-gender {
+    color: skyblue;
+}
+
 #foe-outer {
-    left: 70px;
+    left: 50px;
     top: 65px;
 }
 
@@ -166,12 +198,18 @@ body {
     left: 515px;
     top: 290px;
 }
+
+.shadow {
+    text-shadow: 1px 1px 3px #805b00;
+}
+
 .hp-inner {
     background-color: #ffeec2;
     border: 3px solid #0b2e07;
     border-radius: 10px;
     display: flex;
     flex-flow: column;
+    padding: 12px 5px 5px 15px;
 }
 
 .hp-bot {
@@ -184,7 +222,14 @@ body {
     align-self: flex-end;
     height: 16px;
     width: 70%;
+}
 
+.hp {
+    font-family: 'bigapple';
+    background: -webkit-linear-gradient(#ffd1b3, #ff751a, #b34700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 3px;
 }
 
 .hp-container {

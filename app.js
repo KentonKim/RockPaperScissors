@@ -48,7 +48,7 @@ let userReduction
 let foeReduction 
 
 const dialogueList = 
-    ["What will USER do?",
+    ["What will <br> USER do?",
     "You don't have any more Pokemon to use!",
     'Your bag is empty!',
     "Can't escape!"]
@@ -84,22 +84,22 @@ const hpBoxMoveManTiming = {
     iterations: 1,
 }
 
+
 // starts everything
 overlay.addEventListener('mouseup', ()=> {
     overlay.innerHTML = ''
+    audioBattle.currentTime = 0
     audioBattle.play()
     audioBattle.volume = 0.2
     overlay.classList.remove('overlay')
+
+    
     setInterval(songEnd, 100)
     document.addEventListener('keyup',moveMenu)
     document.addEventListener('keyup',pressingAB)
     menuTL.classList.add(select)
     returnToState('main')
-
-    updateHP(userHP,userHpGreen,userHpBlack)
-    updateHP(foeHP,foeHpGreen,foeHpBlack)
-
-    menuState = 1
+    menuDialogue()
     userHP = 64
     foeHP = 64 
     delay = 0  
@@ -111,6 +111,15 @@ overlay.addEventListener('mouseup', ()=> {
     ppBR= ppBRcap
     userMoves = '' 
     computerMoves = '' 
+
+    updateHP(userHP,userHpGreen,userHpBlack)
+    updateHP(foeHP,foeHpGreen,foeHpBlack)
+
+    audioVictory.pause()
+
+    if (foeSprite.classList.contains('fainted')) {foeSprite.classList.remove('fainted')}
+    if (userSprite.classList.contains('fainted')) {userSprite.classList.remove('fainted')}
+    
 })
 
 function songEnd() {
@@ -133,7 +142,7 @@ battleButton.addEventListener('mouseup', () => {
 
 function moveMenu(e) {
     if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
-        if (menuState != 0){
+        if (menuState == 0 || menuState == 1){
             switch(e.key) {
                 case 'w' : // up 
                     if (menuBL.classList.contains(select)) {
@@ -194,7 +203,7 @@ function ppUpdate() {
             ppCount.innerHTML = "PP " + ppBL + "/" + ppBLcap
         }
         else if (menuOptions[2].classList.contains(select)) { // Paper
-            ppType.innerHTML = 'NORMAL'
+            ppType.innerHTML = 'FIGHTING'
             ppCount.innerHTML = "PP " + ppTR + "/" + ppTRcap
         }
         else if (menuOptions[3].classList.contains(select)) { // Charge
@@ -545,34 +554,37 @@ function returnToState(option) {
 }
 
 function triggerEnd() {
-    document.removeEventListener('keyup',moveMenu)
-    document.removeEventListener('keyup',pressingAB)
+    if (userHP <=0 || foeHP <= 0){
+        document.removeEventListener('keyup',moveMenu)
+        document.removeEventListener('keyup',pressingAB)
+        setTimeout(() => {
+            overlay.classList.add('overlay')
+            overlay.innerHTML = 'Replay?'
+        }, 7000);
 
-    if (userHP <=0) {
-        audioZig.playbackRate = 0.8
-        setTimeout(() => {audioZig.play()}, 1000)
-        setTimeout(() => {userSprite.classList.add('fainted')}, 2500)
-        setTimeout(() => {textBox.innerHTML = "USER has fainted!" }, 3500)
-        setTimeout(() => {textBox.innerHTML = "USER whited out!" }, 5000)
+        if (userHP <=0) {
+            audioZig.playbackRate = 0.8
+            setTimeout(() => {audioZig.play()}, 1000)
+            setTimeout(() => {userSprite.classList.add('fainted')}, 2500)
+            setTimeout(() => {textBox.innerHTML = "USER has fainted!" }, 3500)
+            setTimeout(() => {textBox.innerHTML = "USER whited out!" }, 5000)
+        }
+        else if (foeHP <=0) {
+            audioBidoof.playbackRate = 0.8
+            setTimeout(() => {audioBidoof.play()}, 1000)
+            setTimeout(() => {foeSprite.classList.add('fainted')}, 2500)
+            setTimeout(() => {
+                audioBattle.pause()
+                audioVictory.currentTime = 0
+                audioVictory.play()
+                audioVictory.volume = 0.2
+                textBox.innerHTML = "FOE has fainted!" 
+            }, 3500);
+            setTimeout(() => {
+                textBox.innerHTML = "You won!" 
+            }, 5000);
+        }
     }
-    else if (foeHP <=0) {
-        audioBidoof.playbackRate = 0.8
-        setTimeout(() => {audioBidoof.play()}, 1000)
-        setTimeout(() => {foeSprite.classList.add('fainted')}, 2500)
-        setTimeout(() => {
-            audioBattle.pause()
-            audioVictory.play()
-            audioVictory.volume = 0.2
-            textBox.innerHTML = "FOE has fainted!" 
-        }, 3500);
-        setTimeout(() => {
-            textBox.innerHTML = "You won!" 
-        }, 5000);
-    }
-    setTimeout(() => {
-        overlay.classList.add('overlay')
-        overlay.innerHTML = 'Start!'
-    }, 7000);
 }
 
 function attackAnimate(moves, num) {
