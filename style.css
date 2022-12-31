@@ -199,10 +199,6 @@ body {
     top: 65px;
 }
 
-#foe-inner {
-    padding-bottom: 5px;
-}
-
 #user-outer {
     left: 515px;
     top: 290px;
@@ -296,7 +292,7 @@ body {
 #exp {
     background-color: #00A8E6;
     height: 100%;
-    width: 64%;
+    width: 30%;
 }
 
 /* Pokemon */

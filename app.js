@@ -11,6 +11,8 @@ const userHpNum = document.querySelector('#hp-number')
 const userHpGreen = document.querySelector('#user-hp-green')
 const userHpBlack = document.querySelector('#user-hp-black')
 const userSprite = document.querySelector("#user-sprite")
+const userLevel = document.querySelector('#user-level')
+const userExp = document.querySelector('#exp')
 
 const foeHpBox = document.querySelector('#foe-outer')
 const foeHpGreen = document.querySelector('#foe-hp-green')
@@ -29,6 +31,9 @@ const audioCharge = document.querySelector('#audio-charge')
 const audioHurt = document.querySelector('#audio-hurt')
 const audioZig = document.querySelector('#audio-zigzagoon')
 const audioBidoof = document.querySelector('#audio-bidoof')
+const audioExp= document.querySelector('#audio-exp')
+const audioLevel= document.querySelector('#audio-level')
+const audioLevelSong = document.querySelector('#audio-levelsong')
 
 const spritePaper = document.querySelector('#paper')
 const spritePaperAlt = document.querySelector('#paper-alt')
@@ -115,6 +120,7 @@ overlay.addEventListener('mouseup', ()=> {
 
     updateHP(userHP,userHpGreen,userHpBlack)
     updateHP(foeHP,foeHpGreen,foeHpBlack)
+    userLevel.innerHTML = 'Lv:18'
 
     audioVictory.pause()
 
@@ -144,6 +150,7 @@ battleButton.addEventListener('mouseup', () => {
 function moveMenu(e) {
     if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
         if (menuState == 1 || menuState == 2){
+            levelUp()
             switch(e.key) {
                 case 'w' : // up 
                     if (menuBL.classList.contains(select)) {
@@ -583,14 +590,15 @@ function triggerEnd() {
             setTimeout(() => {audioBidoof.play()}, 1000)
             setTimeout(() => {foeSprite.classList.add('fainted')}, 2500)
             setTimeout(() => {
+                textBox.innerHTML = "FOE has fainted!" 
+            }, 3500);
+            setTimeout(() => {
                 audioBattle.pause()
                 audioVictory.currentTime = 0
                 audioVictory.play()
                 audioVictory.volume = 0.2
-                textBox.innerHTML = "FOE has fainted!" 
-            }, 3500);
-            setTimeout(() => {
-                textBox.innerHTML = "You won!" 
+                textBox.innerHTML = "USER gained <br> 84 EXP. Points!"
+                levelUp()
             }, 5000);
         }
     }
@@ -757,4 +765,47 @@ function setDelay(moves) {
             delay += 1200
             break
     }
+}
+
+function levelUp() {
+
+    let num = 30
+    audioExp.currentTime = 0
+    audioExp.play()
+
+    for (let i = 0; i < 700; i += 10) {
+        setTimeout(() => {
+            num += 1
+            userExp.style.width = num + '%'
+        }, i);
+
+    }
+
+    audioLevel.onended = function() {
+        if (audioVictory.muted == false) {
+            audioVictory.pause() 
+            audioLevelSong.addEventListener('ended', () => {
+                audioVictory.play() 
+            })
+        }
+        audioLevelSong.play()
+    };
+
+    setTimeout(() => {
+        audioExp.pause()
+        audioLevel.play()
+        userLevel.innerHTML = 'Lv:19'
+        userExp.style.width = '0%'
+    }, 700);
+
+    // CHANGE THIS, needs to do after showing all stat changes
+    audioLevelSong.onended = function() {
+        audioExp.currentTime = 0
+        audioExp.play()
+        setTimeout(() => {
+            audioExp.pause()
+        }, 240);
+        userExp.style.width = '2%'
+    }
+
 }
