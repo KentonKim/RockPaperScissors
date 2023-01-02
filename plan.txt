@@ -2,3 +2,24 @@ exp?
 hp bar look better
 
 moves after charging coincide with inflict damage animation
+
+
+
+Foe Bidoof <br> fainted!
+
+audio victory + ZIGZAGOON gained <br> # EXP.Points!
+                                            press A 
+    animate blue bar + audio exp
+    When bar is 100%
+        hp outline turns light blue
+        audio exp 100% 
+        audio level up
+    "ZIGZAGOON grew to <br> LV.19!"
+                                            press A
+    Show stats box with added bonus
+                                            press A 
+    Show stats with resutling stats (hp65 spatk 38 atck38 spdef36 def41 speed50)
+                                            press A 
+    Animate rest of blue bar + audio
+    fade out
+                                

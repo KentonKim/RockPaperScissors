@@ -43,15 +43,17 @@ const spriteScissorArr = document.querySelectorAll('.scissor') // inverted order
 const spriteScissorAltArr = document.querySelectorAll('.scissor-alt')
 const spriteChargeArr = document.querySelectorAll('.charge') // correct order
 const spriteChargeAltArr = document.querySelectorAll('.charge-alt') // correct order
+const spriteStatsBox = document.querySelector('#status')
+const spriteStatsArr = document.querySelectorAll('.stat-num')
 
 const overlay = document.querySelector('.overlay')
 
-let menuState 
-let userHP  
-let foeHP 
-let delay 
-let userReduction 
-let foeReduction 
+let menuState = 1
+let userHP = 64
+let foeHP = 4 
+let delay = 0
+let userReduction = [1,1]
+let foeReduction = [1,1] 
 
 const dialogueList = 
     ["What will <br> USER do?",
@@ -71,12 +73,14 @@ const ppTLcap = 5 // Rock
 const ppTRcap = 5 // Paper
 const ppBLcap = 5 // Scissor
 const ppBRcap = 5 // Charge
-let ppTL 
-let ppTR 
-let ppBL
-let ppBR
-let userMoves 
-let computerMoves 
+let ppTL = ppTLcap
+let ppTR = ppTRcap 
+let ppBL = ppBLcap
+let ppBR = ppBRcap
+let userMoves = '' 
+let computerMoves = ''
+
+let endCount = 0 
 
 // animations
 const hpBoxMoveMan = [
@@ -93,40 +97,22 @@ const hpBoxMoveManTiming = {
 
 // starts everything
 overlay.addEventListener('mouseup', ()=> {
+    if (overlay.innerHTML == 'Replay?') {
+        location.reload()
+    }
+
     overlay.innerHTML = ''
     audioBattle.currentTime = 0
     audioBattle.play()
     audioBattle.volume = 0.2
     overlay.classList.remove('overlay')
 
-    
     setInterval(songEnd, 100)
     document.addEventListener('keyup',moveMenu)
     document.addEventListener('keyup',pressingAB)
     menuTL.classList.add(select)
     returnToState('main')
     menuDialogue()
-    userHP = 64
-    foeHP = 64 
-    delay = 0  
-    userReduction = [1,1]
-    foeReduction = [1,1] 
-    ppTL = ppTLcap 
-    ppTR = ppTRcap 
-    ppBL= ppBLcap
-    ppBR= ppBRcap
-    userMoves = '' 
-    computerMoves = '' 
-
-    updateHP(userHP,userHpGreen,userHpBlack)
-    updateHP(foeHP,foeHpGreen,foeHpBlack)
-    userLevel.innerHTML = 'Lv:18'
-
-    audioVictory.pause()
-
-    if (foeSprite.classList.contains('fainted')) {foeSprite.classList.remove('fainted')}
-    if (userSprite.classList.contains('fainted')) {userSprite.classList.remove('fainted')}
-    
 })
 
 function songEnd() {
@@ -150,7 +136,6 @@ battleButton.addEventListener('mouseup', () => {
 function moveMenu(e) {
     if (e.key == 'w' || e.key == 'a' || e.key == 's' || e.key == 'd'){
         if (menuState == 1 || menuState == 2){
-            levelUp()
             switch(e.key) {
                 case 'w' : // up 
                     if (menuBL.classList.contains(select)) {
@@ -370,6 +355,7 @@ function fightSequence() {
     || (userMoves == moveList[2] && computerMoves == moveList[0])) {
 
         foeHP -= foeReduction[0]*damage
+        if (foeHP < 0) {foeHP = 0}
         setDelay(userMoves)
 
         textBox.innerHTML = "USER used " + userMoves + '!'
@@ -394,6 +380,7 @@ function fightSequence() {
     || (userMoves == moveList[1] && computerMoves == moveList[0])) {
 
         userHP -= userReduction[0]*damage
+        if (userHP < 0) {userHP = 0}
         setDelay(computerMoves)
         textBox.innerHTML = "USER used " + userMoves + '!'
 
@@ -414,6 +401,7 @@ function fightSequence() {
         foeReduction[0] *= 0.5
         userReduction[1] *= 2
         foeHP -= foeReduction[0]*damage
+        if (foeHP < 0) {foeHP = 0}
         setDelay(computerMoves)
 
         textBox.innerHTML = "FOE used " + computerMoves + '!'
@@ -435,6 +423,7 @@ function fightSequence() {
         userReduction[0] *= 0.5
         foeReduction[1] *= 2
         userHP -= userReduction[0]*damage
+        if (userHP < 0) {userHP = 0}
         setDelay(userMoves)
 
         textBox.innerHTML = "USER used " + userMoves + '!'
@@ -512,11 +501,8 @@ function updateUserHP() {
     }, 400);
 }
 
-function updateHP(hp,green,black) {
-    if (hp < 0) {
-        hp = 0
-    }
-    else if (hp <= 16) {
+function updateHP(hp,green,black, total = 64) {
+    if (hp <= 16) {
         green.style.backgroundColor = '#b82116'
     }
     else if (hp <= 32) {
@@ -526,7 +512,7 @@ function updateHP(hp,green,black) {
         green.style.backgroundColor = '#7dff93'
     }
     green.style.flex = hp.toString()
-    black.style.flex = (64-hp).toString()
+    black.style.flex = (total-hp).toString()
 }
 
 function returnToState(option) {
@@ -573,10 +559,6 @@ function triggerEnd() {
     if (userHP <=0 || foeHP <= 0){
         document.removeEventListener('keyup',moveMenu)
         document.removeEventListener('keyup',pressingAB)
-        setTimeout(() => {
-            overlay.classList.add('overlay')
-            overlay.innerHTML = 'Replay?'
-        }, 7000);
 
         if (userHP <=0) {
             audioZig.playbackRate = 0.8
@@ -584,22 +566,23 @@ function triggerEnd() {
             setTimeout(() => {userSprite.classList.add('fainted')}, 2500)
             setTimeout(() => {textBox.innerHTML = "USER has fainted!" }, 3500)
             setTimeout(() => {textBox.innerHTML = "USER whited out!" }, 5000)
+            setTimeout(() => {
+                overlay.classList.add('overlay')
+                overlay.innerHTML = 'Replay?'
+            }, 7000);
+
         }
         else if (foeHP <=0) {
             audioBidoof.playbackRate = 0.8
             setTimeout(() => {audioBidoof.play()}, 1000)
-            setTimeout(() => {foeSprite.classList.add('fainted')}, 2500)
             setTimeout(() => {
-                textBox.innerHTML = "FOE has fainted!" 
+                foeSprite.classList.add('fainted')
+                foeHpBox.classList.add('hidden')
+            }, 2500)
+            setTimeout(() => {
+                textBox.innerHTML = "FOE has fainted!"
+                document.addEventListener('keyup', navigateEnd)
             }, 3500);
-            setTimeout(() => {
-                audioBattle.pause()
-                audioVictory.currentTime = 0
-                audioVictory.play()
-                audioVictory.volume = 0.2
-                textBox.innerHTML = "USER gained <br> 84 EXP. Points!"
-                levelUp()
-            }, 5000);
         }
     }
 }
@@ -767,45 +750,97 @@ function setDelay(moves) {
     }
 }
 
-function levelUp() {
-
-    let num = 30
-    audioExp.currentTime = 0
-    audioExp.play()
-
-    for (let i = 0; i < 700; i += 10) {
-        setTimeout(() => {
-            num += 1
-            userExp.style.width = num + '%'
-        }, i);
-
-    }
-
-    audioLevel.onended = function() {
-        if (audioVictory.muted == false) {
-            audioVictory.pause() 
-            audioLevelSong.addEventListener('ended', () => {
-                audioVictory.play() 
-            })
+function navigateEnd(e) {
+    if (e.key == 'p'){
+        playButton()
+        if (endCount == 0){
+            // first
+            audioBattle.pause()
+            audioVictory.currentTime = 0
+            audioVictory.play()
+            audioVictory.volume = 0.2
+            textBox.innerHTML = "USER gained <br> 84 EXP. Points!"
+            endCount++
         }
-        audioLevelSong.play()
-    };
 
-    setTimeout(() => {
-        audioExp.pause()
-        audioLevel.play()
-        userLevel.innerHTML = 'Lv:19'
-        userExp.style.width = '0%'
-    }, 700);
+        else if (endCount == 1){
+            // second
+            let num = 30
+            audioExp.currentTime = 0
+            audioExp.play()
+            for (let i = 0; i < 700; i += 10) {
+                setTimeout(() => {
+                    num += 1
+                    userExp.style.width = num + '%'
+                }, i);
+            }
 
-    // CHANGE THIS, needs to do after showing all stat changes
-    audioLevelSong.onended = function() {
-        audioExp.currentTime = 0
-        audioExp.play()
-        setTimeout(() => {
-            audioExp.pause()
-        }, 240);
-        userExp.style.width = '2%'
+            // exp bar hits 100%
+            setTimeout(() => {
+                userHpBox.animate([
+                    { transform: 'translateY(0px)'},
+                    { transform: 'translateY(-5px)'},
+                    { transform: 'translateY(0px)'}], {
+                    duration: 100,
+                    })
+
+                // TODO animation of outline being light blue
+
+                audioExp.pause()
+                audioLevel.play()
+                userLevel.innerHTML = 'Lv:19'
+                userHP += 1
+                updateHP(userHP,userHpGreen,userHpBlack, 65)
+                userHpNum.innerHTML = userHP + "/ &nbsp 65"
+                userExp.style.width = '0%'
+            }, 700);
+
+            // adds level up jingle and victory resumes after
+            audioLevel.onended = function() {
+                if (audioVictory.muted == false) {
+                    audioVictory.pause() 
+                    setTimeout(() => {
+                        audioLevelSong.pause()
+                        audioVictory.play() 
+                    }, 1300);
+                }
+                audioLevelSong.play()
+                textBox.innerHTML = 'ZIGZAGOON grew to <br> LV.19!'
+            };
+            endCount++
+        }
+
+        else if (endCount == 2){
+            // third (show stats)
+            spriteStatsBox.classList.remove('hidden')
+            endCount++
+        }
+
+        else if (endCount == 3){
+            // fourth (change stats)
+            spriteStatsArr[0].innerHTML = '65' // hp
+            spriteStatsArr[1].innerHTML = '38' // sp.atk
+            spriteStatsArr[2].innerHTML = '38' // atk
+            spriteStatsArr[3].innerHTML = '41' // sp.def
+            spriteStatsArr[4].innerHTML = '45' // def
+            spriteStatsArr[5].innerHTML = '50' // speed
+            endCount++
+        }
+
+        else if (endCount == 4) {
+            spriteStatsBox.classList.add('hidden')
+            audioExp.currentTime = 0
+            audioExp.play()
+            setTimeout(() => {
+                audioExp.pause()
+            }, 240);
+            userExp.style.width = '2%'
+
+            setTimeout(() => {
+                overlay.classList.add('overlay')
+                overlay.innerHTML = 'Replay?'
+            }, 2000);
+            document.removeEventListener('keyup',navigateEnd)
+        }
     }
-
 }

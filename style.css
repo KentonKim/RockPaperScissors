@@ -127,8 +127,8 @@ body {
 }
 
 .menu-inner {
-    background-color: #f2ecdc;
-    border: 3px solid #d9d4c6;
+    background-color: #F1F1EC;
+    border: 3px solid #deded3;
     border-radius: 10px;
     height: 100%;
     display: flex;
@@ -146,13 +146,13 @@ body {
 }
 
 .menu-option {
-    border: 3px solid #f2ecdc;
+    border: 3px solid #F1F1EC;
     display: flex;
     align-items: center;
     flex: 1;
 
     font-size: 40px;
-    text-shadow: 2px 2px 4px gray;
+    text-shadow: 2px 2px 4px #9d9d7b;
 }
 
 #pp-main {
@@ -197,6 +197,10 @@ body {
 #foe-outer {
     left: 50px;
     top: 65px;
+}
+
+#foe-inner {
+    padding-bottom: 3px;
 }
 
 #user-outer {
@@ -391,6 +395,36 @@ body {
 
 #charge1-alt {
     left: 210px;
+}
+
+/* Status */
+#status {
+
+    position: absolute;
+    width: 60%;
+    height: 40%;
+    right: 5px;
+    top: 5px;
+
+    text-shadow: 2px 2px 4px #9d9d7b;
+}
+
+#status-inner {
+    display: flex;
+    flex-flow: wrap row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat {
+    width: 47%;
+    display: flex;
+    align-items: center;
+    font-size: 40px;
+}
+
+.stat-num {
+    margin-left: auto;
 }
 
 /* Active Items */
