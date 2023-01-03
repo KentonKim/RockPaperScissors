@@ -788,6 +788,7 @@ function navigateEnd(e) {
 
                 audioExp.pause()
                 audioLevel.play()
+                userHpBox.classList.add('lvlup')
                 userLevel.innerHTML = 'Lv:19'
                 userHP += 1
                 updateHP(userHP,userHpGreen,userHpBlack, 65)
