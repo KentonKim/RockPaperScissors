@@ -51,7 +51,7 @@ const overlay = document.querySelector('.overlay')
 
 let menuState = 1
 let userHP = 64
-let foeHP = 4 
+let foeHP = 64 
 let delay = 0
 let userReduction = [1,1]
 let foeReduction = [1,1] 
@@ -342,9 +342,9 @@ function fightSequence() {
 
     // tie
     if (userMoves == computerMoves && userMoves != moveList[3]) {
-        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used <br>" + userMoves + '!'
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF  used " + computerMoves + '!'}, 2000)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF  used <br>" + computerMoves + '!'}, 2000)
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 3000)
         totdelay = 4000 
     }
@@ -358,7 +358,7 @@ function fightSequence() {
         if (foeHP < 0) {foeHP = 0}
         setDelay(userMoves)
 
-        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used <br>" + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
         setTimeout(() => {inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, delay + 1250)
         delay += 420 // damage duration
@@ -367,7 +367,7 @@ function fightSequence() {
                 triggerEnd()
             }
             else {
-                setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, 250)
+                setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used <br>" + computerMoves + '!'}, 250)
                 setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1250)
             }
         }, delay + 1250)
@@ -382,10 +382,10 @@ function fightSequence() {
         userHP -= userReduction[0]*damage
         if (userHP < 0) {userHP = 0}
         setDelay(computerMoves)
-        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used <br>" + userMoves + '!'
 
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, 2000)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used <br>" + computerMoves + '!'}, 2000)
         setTimeout(() => {attackAnimate(computerMoves, 1) }, 3000)
         setTimeout(() => {
             inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack)
@@ -404,10 +404,10 @@ function fightSequence() {
         if (foeHP < 0) {foeHP = 0}
         setDelay(computerMoves)
 
-        textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'
+        textBox.innerHTML = "Wild BIDOOF used <br>" + computerMoves + '!'
         setTimeout(() => {attackAnimate(computerMoves, 1) }, 1000)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1250)
-        setTimeout(() => {textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'}, delay + 2250)
+        setTimeout(() => {textBox.innerHTML = "ZIGZAGOON used <br>" + userMoves + '!'}, delay + 2250)
         setTimeout(() => {attackAnimate(userMoves, 0) }, delay + 3250)
         setDelay(userMoves)
         setTimeout(() => {
@@ -426,10 +426,10 @@ function fightSequence() {
         if (userHP < 0) {userHP = 0}
         setDelay(userMoves)
 
-        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used <br>" + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1250)
-        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, delay + 2250)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used <br>" + computerMoves + '!'}, delay + 2250)
         setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3250)
         setDelay(computerMoves)
         setTimeout(() => {
@@ -447,10 +447,10 @@ function fightSequence() {
         foeReduction[1] *= 2
         setDelay(userMoves)
 
-        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used <br>" + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1250)
-        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, delay + 2250)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used <br>" + computerMoves + '!'}, delay + 2250)
         setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3250)
         setDelay(computerMoves)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 3500)
@@ -608,11 +608,43 @@ function animatePaper(num) {
     let attack
     if (num == 0) { // user is casting
         attack = spritePaper
-
+        userSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.5, transform: 'translateX(30px)'},
+            {offset: 1, transform: 'translateX(0px)'}
+        ], {
+            duration:333,
+            iterations:3
+        })
+        foeSprite.animate([
+            {offset: 0.44, transform: 'translateX(0px)'},
+            {offset: 0.45, transform: 'translateX(20px)'},
+            {offset: 0.55, transform: 'translateX(-20px)'},
+            {offset: 0.56, transform: 'translateX(0px)'},
+        ], {
+            duration: 333,
+            iterations: 3
+        })
     }
     else if (num == 1) { // foe is casting 
         attack = spritePaperAlt
-
+        foeSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.5, transform: 'translateX(-30px)'},
+            {offset: 1, transform: 'translateX(0px)'}
+        ], {
+            duration:333,
+            iterations:3
+        })
+        userSprite.animate([
+            {offset: 0.44, transform: 'translateX(0px)'},
+            {offset: 0.45, transform: 'translateX(-30px)'},
+            {offset: 0.55, transform: 'translateX(30px)'},
+            {offset: 0.56, transform: 'translateX(0px)'},
+        ], {
+            duration: 333,
+            iterations: 3
+        })
     }
 
     attack.classList.remove('hidden')
@@ -648,18 +680,47 @@ function animateRock(num) {
     let attack
     if (num == 0) { // user is casting
         attack = spriteRock
-
+        userSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.04, transform: 'translateX(30px)'},
+            {offset: 0.8, transform: 'translateX(30px)'},
+            {offset: 1, transform: 'translateX(0px)'}
+        ], {
+            duration:1000,
+        })
+        foeSprite.animate([
+            {offset: 0, transform: 'translateY(0px)'},
+            {offset: 0.05, transform: 'scale(1.4, 0.7) translateY(30px)'},
+            {offset: 0.99, transform: 'scale(1.4, 0.7) translateY(30px)'}
+        ], {
+            duration:800
+        })
     }
     else if (num == 1) { // foe is casting 
         attack = spriteRockAlt
+        foeSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.04, transform: 'translateX(-20px)'},
+            {offset: 0.8, transform: 'translateX(-20px)'},
+            {offset: 1, transform: 'translateX(0px)'}
+        ], {
+            duration:1000,
+        })
+        userSprite.animate([
+            {offset: 0, transform: 'translateY(0px)'},
+            {offset: 0.05, transform: 'scale(1.4, 0.7) translateY(30px)'},
+            {offset: 0.99, transform: 'scale(1.4, 0.7) translateY(30px)'}
+        ], {
+            duration:800
+        })
 
     }
 
     attack.classList.remove('hidden')
     attack.animate([
         {offset: 0, transform: 'translateY(0px)'},
-        {offset: 0.05, transform: 'translateY(35px)'},
-        {transform: 'translateY(35px)'}
+        {offset: 0.05, transform: 'translateY(22px)'},
+        {transform: 'translateY(22px)'}
     ], {
         duration: 800
     })
@@ -673,9 +734,44 @@ function animateScissor(num) {
     let attackArr
     if (num == 0) { // user is casting
         attackArr = spriteScissorArr 
+        userSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.5, transform: 'translateX(30px)'},
+            {offset: 1, transform: 'translateX(0px)'}
+        ], {
+            duration:50,
+        })
+        foeSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.49, transform: 'translateX(0px)'},
+            {offset: 0.5, transform: 'translateX(-20px)'},
+            {offset: 0.51, transform: 'translateX(20px)'},
+            {offset: 0.52, transform: 'translateX(0px)'},
+            {offset: 0.99, transform: 'translateX(0px)'}
+        ], {
+            duration:500
+        })
+
     }
     else if (num == 1) { // foe is casting 
         attackArr = spriteScissorAltArr 
+        foeSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.5, transform: 'translateX(-20px)'},
+            {offset: 1, transform: 'translateX(0px)'}
+        ], {
+            duration:50,
+        })
+        userSprite.animate([
+            {offset: 0, transform: 'translateX(0px)'},
+            {offset: 0.49, transform: 'translateX(0px)'},
+            {offset: 0.5, transform: 'translateX(30px)'},
+            {offset: 0.51, transform: 'translateX(-30px)'},
+            {offset: 0.52, transform: 'translateX(0px)'},
+            {offset: 0.99, transform: 'translateX(0px)'}
+        ], {
+            duration:500
+        })
     }
 
     audioScissor.play()
