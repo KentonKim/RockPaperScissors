@@ -24,7 +24,6 @@
     <audio src="audio/battle song.mp3" id="audio-battle"></audio>
 </head>
 <body>
-
     <div class="screen">
         <!-- Attacks -->
         <img src="sprites/charge1.png" alt="charge attack1" id="charge1" class="hidden charge move">
@@ -173,8 +172,17 @@
         <div class="overlay">Click to start!</div>
     </div>
     <div id="outside-menu" class="menu-outline">
-        <div class="menu-outer">
-            <button class="menu-inner" id="battle-button">Music</button>
+        <div id="helpbox" class="menu-outer">
+            <button class="menu-inner" id="battle-button">
+                <img src="https://img.pokemondb.net/sprites/black-white/anim/normal/kricketune.gif" alt="Kricketune">
+                <img id="red-circle" class='hidden' src="sprites/redcircle.png" alt="red circle with line through it">
+            </button>
+            <div class="menu-inner">
+                WASD to Move<br>
+                P to Confirm <br>
+                O to Cancel
+
+            </div>
         </div>
     </div>
 
