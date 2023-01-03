@@ -45,6 +45,7 @@ const spriteChargeArr = document.querySelectorAll('.charge') // correct order
 const spriteChargeAltArr = document.querySelectorAll('.charge-alt') // correct order
 const spriteStatsBox = document.querySelector('#status')
 const spriteStatsArr = document.querySelectorAll('.stat-num')
+const redCircle = document.querySelector('#red-circle')
 
 const overlay = document.querySelector('.overlay')
 
@@ -124,10 +125,12 @@ function songEnd() {
 // battle theme
 battleButton.addEventListener('mouseup', () => {
     if (audioBattle.muted == false || audioVictory.muted == false){
+        redCircle.classList.remove('hidden')
         audioBattle.muted = true
         audioVictory.muted = true
     }
     else {
+        redCircle.classList.add('hidden')
         audioBattle.muted = false
         audioVictory.muted = false 
     }

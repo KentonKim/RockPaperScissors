@@ -58,6 +58,21 @@ body {
 
 }
 
+#battle-button {
+    padding: 0;
+}
+
+#helpbox {
+    display: flex;
+    gap: 10px;
+}
+
+#red-circle {
+    position: absolute;
+    left: 383px;
+    top: 633px;
+}
+
 /* Text box*/
 
 .chat-outer {
@@ -473,8 +488,8 @@ body {
 @-webkit-keyframes lvling {
   0% { background-color: #50635c; }
   0% { border-color: #50635c; }
-  50% { background-color: #99f; }
-  50% { border-color: #99f; }
+  50% { background-color: #BBDBFF; }
+  50% { border-color: #BBDBFF; }
   100% { background-color: #50635c; }
   100% { border-color: #50635c; }
 }
@@ -482,8 +497,8 @@ body {
 @keyframes lvling {
   0% { background-color: #50635c; }
   0% { border-color: #50635c; }
-  50% { background-color: #99f; }
-  50% { border-color: #99f; }
+  50% { background-color: #BBDBFF; }
+  50% { border-color: #BBDBFF; }
   100% { background-color: #50635c; }
   100% { border-color: #50635c; }
 }
