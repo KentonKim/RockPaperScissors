@@ -57,7 +57,7 @@ let userReduction = [1,1]
 let foeReduction = [1,1] 
 
 const dialogueList = 
-    ["What will <br> USER do?",
+    ["What should <br> ZIGZAGOON do?",
     "You don't have any more Pokemon to use!",
     'Your bag is empty!',
     "Can't escape!"]
@@ -333,9 +333,6 @@ function storeAttack() {
 
     // store attack for computer
     computerMoves = moveList[Math.floor(Math.random()*4)]
-
-    console.log('user chose ' + userMoves)
-    console.log('foe chose ' + computerMoves)
 }
 
 function fightSequence() {
@@ -345,9 +342,9 @@ function fightSequence() {
 
     // tie
     if (userMoves == computerMoves && userMoves != moveList[3]) {
-        textBox.innerHTML = "USER used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2000)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF  used " + computerMoves + '!'}, 2000)
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 3000)
         totdelay = 4000 
     }
@@ -361,7 +358,7 @@ function fightSequence() {
         if (foeHP < 0) {foeHP = 0}
         setDelay(userMoves)
 
-        textBox.innerHTML = "USER used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
         setTimeout(() => {inflictDamage(foeSprite, foeHpBox, foeHP, foeHpGreen, foeHpBlack) }, delay + 1250)
         delay += 420 // damage duration
@@ -370,7 +367,7 @@ function fightSequence() {
                 triggerEnd()
             }
             else {
-                setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 250)
+                setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, 250)
                 setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1250)
             }
         }, delay + 1250)
@@ -385,10 +382,10 @@ function fightSequence() {
         userHP -= userReduction[0]*damage
         if (userHP < 0) {userHP = 0}
         setDelay(computerMoves)
-        textBox.innerHTML = "USER used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
 
         setTimeout(() => {textBox.innerHTML = "But it failed!" }, 1000)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, 2000)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, 2000)
         setTimeout(() => {attackAnimate(computerMoves, 1) }, 3000)
         setTimeout(() => {
             inflictDamage(userSprite, userHpBox, userHP, userHpGreen, userHpBlack)
@@ -407,10 +404,10 @@ function fightSequence() {
         if (foeHP < 0) {foeHP = 0}
         setDelay(computerMoves)
 
-        textBox.innerHTML = "FOE used " + computerMoves + '!'
+        textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'
         setTimeout(() => {attackAnimate(computerMoves, 1) }, 1000)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1250)
-        setTimeout(() => {textBox.innerHTML = "USER used " + userMoves + '!'}, delay + 2250)
+        setTimeout(() => {textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'}, delay + 2250)
         setTimeout(() => {attackAnimate(userMoves, 0) }, delay + 3250)
         setDelay(userMoves)
         setTimeout(() => {
@@ -429,10 +426,10 @@ function fightSequence() {
         if (userHP < 0) {userHP = 0}
         setDelay(userMoves)
 
-        textBox.innerHTML = "USER used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1250)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 2250)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, delay + 2250)
         setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3250)
         setDelay(computerMoves)
         setTimeout(() => {
@@ -450,10 +447,10 @@ function fightSequence() {
         foeReduction[1] *= 2
         setDelay(userMoves)
 
-        textBox.innerHTML = "USER used " + userMoves + '!'
+        textBox.innerHTML = "ZIGZAGOON used " + userMoves + '!'
         setTimeout(() => {attackAnimate(userMoves, 0) }, 1000)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 1250)
-        setTimeout(() => {textBox.innerHTML = "FOE used " + computerMoves + '!'}, delay + 2250)
+        setTimeout(() => {textBox.innerHTML = "Wild BIDOOF used " + computerMoves + '!'}, delay + 2250)
         setTimeout(() => {attackAnimate(computerMoves, 1) }, delay + 3250)
         setDelay(computerMoves)
         setTimeout(() => {textBox.innerHTML = "They began charging!" }, delay + 3500)
@@ -567,7 +564,7 @@ function triggerEnd() {
             audioZig.playbackRate = 0.8
             setTimeout(() => {audioZig.play()}, 1000)
             setTimeout(() => {userSprite.classList.add('fainted')}, 2500)
-            setTimeout(() => {textBox.innerHTML = "USER has fainted!" }, 3500)
+            setTimeout(() => {textBox.innerHTML = "ZIGZAGOON has fainted!" }, 3500)
             setTimeout(() => {textBox.innerHTML = "USER whited out!" }, 5000)
             setTimeout(() => {
                 overlay.classList.add('overlay')
@@ -583,7 +580,7 @@ function triggerEnd() {
                 foeHpBox.classList.add('hidden')
             }, 2500)
             setTimeout(() => {
-                textBox.innerHTML = "FOE has fainted!"
+                textBox.innerHTML = "Wild BIDOOF has fainted!"
                 document.addEventListener('keyup', navigateEnd)
             }, 3500);
         }
@@ -762,7 +759,7 @@ function navigateEnd(e) {
             audioVictory.currentTime = 0
             audioVictory.play()
             audioVictory.volume = 0.2
-            textBox.innerHTML = "USER gained <br> 84 EXP. Points!"
+            textBox.innerHTML = "ZIGZAGOON gained <br> 84 EXP. Points!"
             endCount++
         }
 

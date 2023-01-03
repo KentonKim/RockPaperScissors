@@ -55,7 +55,12 @@ body {
     position: absolute;
     top: 272px;
     left: 484px;
+}
 
+/* music and controls box */
+
+#outside-menu {
+    position: relative;
 }
 
 #battle-button {
@@ -69,8 +74,8 @@ body {
 
 #red-circle {
     position: absolute;
-    left: 383px;
-    top: 633px;
+    left: 20px;
+    top: 20px;
 }
 
 /* Text box*/
