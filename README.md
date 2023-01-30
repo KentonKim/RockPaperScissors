@@ -1,5 +1,7 @@
-# RockPaperScissors
+# RockPaperScissors - Pokemon Ruby Version
 Rock Paper Scissors Project with TOP
+Done in a pokemon-battle, gen 3 style
+I am aware that bidoof is from gen 4
 
 Pixel Font from https://www.dafont.com/pokemon-ruby-sapphi.font
 
